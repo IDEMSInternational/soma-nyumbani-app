@@ -1,31 +1,78 @@
-import { Injectable } from '@angular/core';
-import * as PouchDB from 'pouchdb/dist/pouchdb';
-// PouchDB.plugin(require('pouchdb-authentication'));
+import { Injectable } from "@angular/core";
+// Hacky import to fix lack of types when importing from dist and broken default import
+import * as PouchDBDist from "pouchdb/dist/pouchdb";
+import * as PouchDBDefault from "pouchdb";
+import { BehaviorSubject } from "rxjs";
+import { ISessionActivity, IDailySession, IDBDoc } from "src/types";
+const PouchDB: typeof PouchDBDefault = PouchDBDist;
+
+const DB_USER = "somanyumbani_app";
+const DB_PASS = "somanyumbani_app";
+const DB_DOMAIN = "db.somanyumbani.com";
+const localDBs = {
+  activities: new PouchDB("somanyumbani_activities"),
+  daily_sessions: new PouchDB("somanyumbani_daily_sessions"),
+};
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DbService {
-  localDB = new PouchDB('somanyumbani');
-  remoteDB = new PouchDB('https://somanyumbani:somanyumbani@db.somanyumbani.com');
+  activities$ = new BehaviorSubject<{
+    [activityId: string]: ISessionActivity & IDBDoc;
+  }>({});
+  dailySessions$ = new BehaviorSubject<(IDailySession & IDBDoc)[]>([]);
+
   constructor() {
-    console.log('local', this.localDB);
-    console.log('remote', this.remoteDB);
-    this._syncRemoteDB();
+    Object.keys(localDBs).forEach((endpoint) =>
+      this.loadDB(endpoint as IDBEndpoint)
+    );
+    this._syncRemoteDBs();
   }
 
-  private _syncRemoteDB() {
-    // this.localDB.logIn('somanyumbani', 'somanyumbani').then(() => {
-    //   console.log('logged into db');
-    // });
-    this.localDB.replicate
-      .from(this.remoteDB)
-      .on('complete', () => {
-        // yay, we're done!
-        console.log('replication complete');
+  public getAttachment(
+    endpoint: IDBEndpoint,
+    docId: string,
+    attachmentId: string
+  ) {
+    return localDBs[endpoint].getAttachment(docId, attachmentId);
+  }
+
+  private async loadDB(endpoint: IDBEndpoint) {
+    const { rows } = await localDBs[endpoint].allDocs<any>({
+      attachments: false,
+      include_docs: true,
+    });
+    const docs = rows.map((r) => r.doc);
+    switch (endpoint) {
+      case "activities":
+        const activitiesHash = {};
+        docs.forEach((d) => (activitiesHash[d._id] = d));
+        return this.activities$.next(activitiesHash);
+      case "daily_sessions":
+        return this.dailySessions$.next(docs);
+    }
+  }
+
+  private _syncRemoteDBs() {
+    Object.keys(localDBs).forEach((endpoint) => {
+      const remote = `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`;
+      PouchDB.replicate(remote, localDBs[endpoint], {
+        live: true,
+        retry: true,
+        batch_size: 1,
       })
-      .on('error', () => {
-        // boo, something went wrong!
-      });
+        .on("change", (info) => this.loadDB(endpoint as IDBEndpoint))
+        .on("paused", (err) => console.log("sync paused", endpoint, err))
+        .on("active", () => console.log("sync active", endpoint))
+        .on("denied", (err) => console.log("sync denied", endpoint, err))
+        .on("complete", (info) => console.log("sync complete", endpoint, info))
+        .on("error", (err) => {
+          console.error(endpoint, err);
+          throw new Error(`${endpoint} sync error: ${err}`);
+          // handle error
+        });
+    });
   }
 }
+type IDBEndpoint = keyof typeof localDBs;

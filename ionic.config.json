@@ -1,0 +1,7 @@
+{
+  "name": "soma-nyumbani",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
