@@ -3,7 +3,7 @@
   "appName": "soma-nyumbani",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "dist",
+  "webDir": "dist/app",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
