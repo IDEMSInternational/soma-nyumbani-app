@@ -107,6 +107,11 @@
             "scripts": [],
             "assets": [
               {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
+              {
                 "glob": "favicon.ico",
                 "input": "src/",
                 "output": "/"
