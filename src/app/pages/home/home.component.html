@@ -1,1 +1,9 @@
-<p>home works!</p>
+<div *ngFor="let session of db.dailySessions$ | async">
+  <div>{{ session.date }}</div>
+  <div>{{ session.title }}</div>
+  <div *ngFor="let activityId of session.activities">
+    <app-session-activity
+      [activity]="(db.activities$ | async)[activityId]"
+    ></app-session-activity>
+  </div>
+</div>
