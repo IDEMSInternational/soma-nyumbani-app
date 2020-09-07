@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "counting_squares",
+    "_rev": "2-3da1049b7e4251f6e128cac79f857a06",
+    "title": "Counting Squares",
+    "description": "",
+    "tags": [],
+    "_attachments": {
+      "session_guide_1.pdf": {
+        "content_type": "application/pdf",
+        "revpos": 2,
+        "digest": "md5-l7U2odiw4qtg0skrpbI5gw==",
+        "length": 250920,
+        "stub": true
+      }
+    }
+  }
+]
