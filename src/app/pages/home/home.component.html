@@ -1,9 +1,30 @@
-<div *ngFor="let session of db.dailySessions$ | async">
-  <div>{{ session.date }}</div>
-  <div>{{ session.title }}</div>
-  <div *ngFor="let activityId of session.activities">
-    <app-session-activity
-      [activity]="(db.activities$ | async)[activityId]"
-    ></app-session-activity>
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Soma Nyumbani </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngFor="let session of db.dailySessions$ | async">
+    <div>{{ session.date }}</div>
+    <div>{{ session.title }}</div>
+    <div *ngFor="let activityId of session.activities">
+      <app-session-activity
+        [activity]="(db.activities$ | async)[activityId]"
+      ></app-session-activity>
+    </div>
   </div>
-</div>
+</ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Navigation Bar</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-title>Subheader</ion-title>
+  </ion-toolbar>
+</ion-header>
