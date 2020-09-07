@@ -1,26 +1,16 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title> Soma Nyumbani </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div *ngFor="let session of db.dailySessions$ | async">
-    <div>{{ session.date }}</div>
-    <div>{{ session.title }}</div>
-    <div *ngFor="let activityId of session.activities">
-      <app-session-activity
-        [activity]="(db.activities$ | async)[activityId]"
-      ></app-session-activity>
-    </div>
-  </div>
-  np
+<ion-content [fullscreen]="true" class="ion-padding">
+  <section *ngFor="let session of db.dailySessions$ | async, index as i">
+    <h2>{{ session.date | date}}</h2>
+    <app-session-activity
+      *ngFor="let activityId of session.activities"
+      [activity]="(db.activities$ | async)[activityId]"
+      [index]="i"
+    ></app-session-activity>
+  </section>
 </ion-content>
-
-<ion-content [fullscreen]="true"> </ion-content> -->

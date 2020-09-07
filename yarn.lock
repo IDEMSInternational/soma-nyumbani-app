@@ -1089,6 +1089,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@ionic-native/file-opener@^5.28.0":
+  version "5.28.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/file-opener/-/file-opener-5.28.0.tgz#9045c4c4c7b149380c018fc611c2414d92698c24"
+  integrity sha512-oQTfkLH5gnfDZ8TELzhy/iyYzChBKXS78/N0wQ0lB7Xe4rkJnD9J9A6dtGksIWNcEt22jOre5YgboA/mMjyh5g==
+  dependencies:
+    "@types/cordova" latest
+
 "@ionic-native/splash-screen@^5.0.0":
   version "5.28.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/splash-screen/-/splash-screen-5.28.0.tgz#b38494f3a9fa0d61682da5691860d27994fd321c"
@@ -3007,6 +3014,11 @@ copy-webpack-plugin@^6.0.3:
     schema-utils "^2.7.1"
     serialize-javascript "^4.0.0"
     webpack-sources "^1.4.3"
+
+cordova-plugin-file-opener2@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-file-opener2/-/cordova-plugin-file-opener2-3.0.4.tgz#e95cf2da11666cbf25346a4c9463ec4dd162c6fd"
+  integrity sha512-bd1aCx62X2RwpC+KUiuB7quoxL/8RnPMEJU7x38Tvs+cUGLWBvsmR9+/LqGBsSns2CIqgnJ34TW0Vazoqu7Ieg==
 
 core-js-compat@^3.6.2:
   version "3.6.5"

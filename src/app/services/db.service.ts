@@ -30,6 +30,14 @@ export class DbService {
     this._syncRemoteDBs();
   }
 
+  public getAttachment(
+    endpoint: IDBEndpoint,
+    docId: string,
+    attachmentId: string
+  ) {
+    return localDBs[endpoint].getAttachment(docId, attachmentId);
+  }
+
   private async loadDB(endpoint: IDBEndpoint) {
     const { rows } = await localDBs[endpoint].allDocs<any>({
       attachments: false,
@@ -67,6 +75,4 @@ export class DbService {
     });
   }
 }
-type ISyncStatus = "Paused" | "Pending";
-type IDB = typeof localDBs["activities"];
 type IDBEndpoint = keyof typeof localDBs;
