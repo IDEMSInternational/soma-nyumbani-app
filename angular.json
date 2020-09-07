@@ -20,7 +20,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "_redirects",
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
               {
                 "glob": "**/*",
                 "input": "src/assets",
