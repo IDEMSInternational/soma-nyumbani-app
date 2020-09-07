@@ -1,10 +1,16 @@
-<!-- <ion-header [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title> Soma Nyumbani </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <div *ngFor="let session of db.dailySessions$ | async">
     <div>{{ session.date }}</div>
     <div>{{ session.title }}</div>
@@ -14,17 +20,7 @@
       ></app-session-activity>
     </div>
   </div>
-</ion-content> -->
+  np
+</ion-content>
 
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>My Navigation Bar</ion-title>
-  </ion-toolbar>
-
-  <ion-toolbar>
-    <ion-title>Subheader</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true"> </ion-content> -->
