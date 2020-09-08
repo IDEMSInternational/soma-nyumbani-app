@@ -1,8 +1,11 @@
-# Create production builds for web, ios and android, and deploy to relevant providers
-name: Build and Deploy Production
+name: Android Release
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - cc/dev
+# on:
+#   release:
+#     types: [published]
 jobs:
   build_dist:
     name: Build Production
