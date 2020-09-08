@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "app:build": "npm run build -- --prod && npx cap sync",
-    "postinstall": "ngcc && npx jetify"
+    "postinstall": "ngcc && npx jetify",
+    "version": "ts-node --project tsconfig.scripts.json scripts/version.ts"
   },
   "private": true,
   "dependencies": {
@@ -42,13 +43,18 @@
     "@angular/language-service": "~10.1.0",
     "@capacitor/cli": "^2.4.0",
     "@ionic/angular-toolkit": "^2.3.3",
+    "@types/fs-extra": "^9.0.1",
+    "@types/inquirer": "^7.3.1",
     "@types/jasmine": "~3.5.14",
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "^14.6.4",
     "@types/pouchdb": "^6.4.0",
     "codelyzer": "^6.0.0",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.2",
+    "jetifier": "^1.6.6",
     "karma": "~5.2.1",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.3",
