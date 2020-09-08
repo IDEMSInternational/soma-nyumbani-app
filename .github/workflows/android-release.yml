@@ -1,11 +1,7 @@
 name: Android Release
 on:
-  push:
-    branches:
-      - cc/dev
-# on:
-#   release:
-#     types: [published]
+  release:
+    types: [published]
 jobs:
   build_dist:
     name: Build Production
