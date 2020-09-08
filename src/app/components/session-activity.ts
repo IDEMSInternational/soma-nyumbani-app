@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { ISessionActivity, IDBDoc } from "src/types";
 import { FileService } from "../services/file.service";
 
@@ -21,23 +21,17 @@ import { FileService } from "../services/file.service";
     </ion-card>
   `,
 })
-export class SessionActivityComponent implements OnInit, OnDestroy {
+export class SessionActivityComponent {
   @Input() set activity(activity: ISessionActivity & IDBDoc) {
     if (activity) {
-      console.log("set activity", activity);
       this._activity = activity;
       this.attachments = this._prepareAttachments(activity);
-      console.log("attachments", this.attachments);
     }
   }
   @Input() index: number;
   attachments: any[];
   public _activity: ISessionActivity;
   constructor(public fileService: FileService) {}
-  ngOnInit() {
-    console.log("init", this.activity);
-  }
-  ngOnDestroy() {}
 
   _prepareAttachments(activity: ISessionActivity & IDBDoc) {
     const attachments = activity._attachments || {};

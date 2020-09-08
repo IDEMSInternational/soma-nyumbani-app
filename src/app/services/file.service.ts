@@ -12,7 +12,6 @@ const { Filesystem } = Plugins;
 export class FileService {
   constructor(private db: DbService, private fileOpener: FileOpener) {}
   async openAttachment(attachment: IAttachment) {
-    console.log("open attachment", attachment);
     // Get Attachment
     const { attachmentId, docId, content_type } = attachment;
     const data = await this.db.getAttachment("activities", docId, attachmentId);
@@ -29,7 +28,6 @@ export class FileService {
       reader.readAsDataURL(file);
       reader.onloadend = async () => {
         const base64data = reader.result as string;
-        console.log("writing file", path);
         const { uri } = await Filesystem.writeFile({
           data: base64data,
           path,
