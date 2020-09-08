@@ -5,12 +5,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <section *ngFor="let session of db.dailySessions$ | async, index as i">
-    <h2>{{ session.title}}</h2>
+  <div class="day-nav">
+    <ion-button
+      fill="clear"
+      [disabled]="db.activeDay===1"
+      (click)="db.setActiveDay(db.activeDay-1)"
+      >Previous</ion-button
+    >
+    <h2>Day {{db.activeDay}}</h2>
+    <ion-button
+      fill="clear"
+      [disabled]="db.activeDay===(db.dailySessions$ | async).length"
+      (click)="db.setActiveDay(db.activeDay+1)"
+      >Next</ion-button
+    >
+  </div>
+  <!-- Active Session Template -->
+  <div *ngIf="(db.dailySessions$ | async)[db.activeDay-1] as session">
     <app-session-activity
       *ngFor="let activityId of session.activities, index as j"
       [activity]="(db.activities$ | async)[activityId]"
       [index]="j"
     ></app-session-activity>
-  </section>
+  </div>
 </ion-content>
