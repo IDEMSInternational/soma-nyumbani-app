@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title> Soma Nyumbani </ion-title>
+    <span class="app-version">v{{APP_VERSION}}</span>
   </ion-toolbar>
 </ion-header>
 
@@ -10,15 +11,15 @@
       fill="clear"
       [disabled]="db.activeDay===1"
       (click)="db.setActiveDay(db.activeDay-1)"
-      >Previous</ion-button
-    >
+      ><ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon
+    ></ion-button>
     <h2>Day {{db.activeDay}}</h2>
     <ion-button
       fill="clear"
       [disabled]="db.activeDay===(db.dailySessions$ | async).length"
       (click)="db.setActiveDay(db.activeDay+1)"
-      >Next</ion-button
-    >
+      ><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon
+    ></ion-button>
   </div>
   <!-- Active Session Template -->
   <div *ngIf="(db.dailySessions$ | async)[db.activeDay-1] as session">

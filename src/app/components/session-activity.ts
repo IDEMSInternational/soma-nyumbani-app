@@ -16,7 +16,9 @@ import { FileService } from "../services/file.service";
         color="primary"
       >
         <ion-icon slot="start" src="assets/icons/pdf.svg"></ion-icon>
-        {{ attachment.attachmentId }}
+        <span style="max-width:150px;overflow:hidden;text-overflow:ellipsis">{{
+          attachment.attachmentId
+        }}</span>
       </ion-button>
     </ion-card>
   `,
