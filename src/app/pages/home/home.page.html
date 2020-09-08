@@ -6,11 +6,11 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <section *ngFor="let session of db.dailySessions$ | async, index as i">
-    <h2>{{ session.date | date}}</h2>
+    <h2>{{ session.title}}</h2>
     <app-session-activity
-      *ngFor="let activityId of session.activities"
+      *ngFor="let activityId of session.activities, index as j"
       [activity]="(db.activities$ | async)[activityId]"
-      [index]="i"
+      [index]="j"
     ></app-session-activity>
   </section>
 </ion-content>

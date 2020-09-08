@@ -12,7 +12,8 @@
     "e2e": "ng e2e",
     "app:build": "npm run build -- --prod && npx cap sync",
     "postinstall": "ngcc && npx jetify",
-    "version": "ts-node --project tsconfig.scripts.json scripts/version.ts"
+    "version": "ts-node --project tsconfig.scripts.json scripts/version.ts",
+    "scripts:populateDB": "ts-node --project tsconfig.scripts.json scripts/populateDB.ts"
   },
   "private": true,
   "dependencies": {
@@ -49,6 +50,7 @@
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "^14.6.4",
     "@types/pouchdb": "^6.4.0",
+    "axios": "^0.20.0",
     "codelyzer": "^6.0.0",
     "fs-extra": "^9.0.1",
     "inquirer": "^7.3.3",
