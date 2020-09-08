@@ -1,16 +1,32 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title> Soma Nyumbani </ion-title>
+    <span class="app-version">v{{APP_VERSION}}</span>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <section *ngFor="let session of db.dailySessions$ | async, index as i">
-    <h2>{{ session.date | date}}</h2>
+  <div class="day-nav">
+    <ion-button
+      fill="clear"
+      [disabled]="db.activeDay===1"
+      (click)="db.setActiveDay(db.activeDay-1)"
+      ><ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon
+    ></ion-button>
+    <h2>Day {{db.activeDay}}</h2>
+    <ion-button
+      fill="clear"
+      [disabled]="db.activeDay===(db.dailySessions$ | async).length"
+      (click)="db.setActiveDay(db.activeDay+1)"
+      ><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon
+    ></ion-button>
+  </div>
+  <!-- Active Session Template -->
+  <div *ngIf="(db.dailySessions$ | async)[db.activeDay-1] as session">
     <app-session-activity
-      *ngFor="let activityId of session.activities"
+      *ngFor="let activityId of session.activities, index as j"
       [activity]="(db.activities$ | async)[activityId]"
-      [index]="i"
+      [index]="j"
     ></app-session-activity>
-  </section>
+  </div>
 </ion-content>

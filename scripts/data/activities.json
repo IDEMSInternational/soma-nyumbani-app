@@ -1,0 +1,42 @@
+[
+  {
+    "_id": "counting-squares",
+    "title": "Counting Squares",
+    "description": "In this session, learners are asked to count how many squares they can find in a given square grid"
+  },
+  {
+    "_id": "mirroring-moves",
+    "title": "Mirroring Moves",
+    "description": ""
+  },
+  {
+    "_id": "understanding-covid-19-prevention",
+    "title": "Understanding Prevention",
+    "description": ""
+  },
+  {
+    "_id": "creative-writing",
+    "title": "Creative Writing",
+    "description": ""
+  },
+  {
+    "_id": "environmental-news",
+    "title": "Environmental News",
+    "description": ""
+  },
+  {
+    "_id": "collatz-conjecture",
+    "title": "Collatz Conjecture",
+    "description": ""
+  },
+  {
+    "_id": "daily-planning",
+    "title": "Daily Planning",
+    "description": ""
+  },
+  {
+    "_id": "creative-word-use",
+    "title": "Creative Word Use",
+    "description": ""
+  }
+]

@@ -18,12 +18,14 @@ const localDBs = {
   providedIn: "root",
 })
 export class DbService {
+  activeDay: number;
   activities$ = new BehaviorSubject<{
     [activityId: string]: ISessionActivity & IDBDoc;
   }>({});
   dailySessions$ = new BehaviorSubject<(IDailySession & IDBDoc)[]>([]);
 
   constructor() {
+    this.activeDay = Number(localStorage.getItem("activeDay") || "1");
     Object.keys(localDBs).forEach((endpoint) =>
       this.loadDB(endpoint as IDBEndpoint)
     );
@@ -36,6 +38,11 @@ export class DbService {
     attachmentId: string
   ) {
     return localDBs[endpoint].getAttachment(docId, attachmentId);
+  }
+
+  public setActiveDay(index: number) {
+    localStorage.setItem("activeDay", index.toString());
+    this.activeDay = index;
   }
 
   private async loadDB(endpoint: IDBEndpoint) {

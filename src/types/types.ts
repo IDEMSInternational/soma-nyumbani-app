@@ -1,8 +1,5 @@
 export interface IDailySession {
-  date: string;
   title: string;
-  description: string;
-  public: true;
   activities: string[];
 }
 export interface ISessionActivity {
