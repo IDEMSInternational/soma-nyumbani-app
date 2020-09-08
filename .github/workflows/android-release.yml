@@ -23,25 +23,6 @@ jobs:
         run: yarn install
       - name: Build
         run: npm run app:build
-        # Store various folders as artifacts for use by other jobs (ignore node modules except those needed by capacitor)
-      - name: Store Build Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: app
-          path: |
-            .
-            !/node_modules
-            node_modules/@capacitor
-  build_deploy_android:
-    needs: [build_dist]
-    name: Deploy to Play Store Internal Track
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: app
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -70,13 +51,3 @@ jobs:
           releaseFile: ${{ env.SIGNED_RELEASE_FILE}}
           track: internal
           #whatsNewDirectory: /distribution/whatsnew
-  cleanup:
-    # NOTE - this will only run if previous action successful, so either ensure passes, or move to cron job
-    needs: [build_deploy_android]
-    runs-on: ubuntu-latest
-    name: Delete intermediary artifacts
-    steps:
-      - uses: geekyeggo/delete-artifact@v1
-        with:
-          name: app
-          failOnError: false
