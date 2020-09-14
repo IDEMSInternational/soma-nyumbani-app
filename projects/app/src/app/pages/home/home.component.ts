@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DbService } from 'src/app/services/db.service';
+import { DbService } from '@soma-nyumbani/shared';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +7,9 @@ import { DbService } from 'src/app/services/db.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private db: DbService) {}
+  constructor(private db: DbService) {
+    console.log('hello db service');
+  }
 
   ngOnInit(): void {}
 }

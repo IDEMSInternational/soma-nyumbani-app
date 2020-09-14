@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import * as PouchDB from "pouchdb/dist/pouchdb";
-// PouchDB.plugin(require('pouchdb-authentication'));
 
 @Injectable({
   providedIn: "root",
