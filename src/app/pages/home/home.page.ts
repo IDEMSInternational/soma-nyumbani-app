@@ -8,6 +8,5 @@ import { environment } from "src/environments/environment";
   styleUrls: ["home.page.scss"],
 })
 export class HomePage {
-  APP_VERSION = environment.APP_VERSION;
   constructor(public db: DbService) {}
 }

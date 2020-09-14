@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Plugins, FilesystemDirectory, Capacitor } from "@capacitor/core";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { IDBAttachmentStub } from "src/types";
+import { AnalyticsService } from "./analytics.service";
 import { DbService } from "./db.service";
 
 const { Filesystem } = Plugins;
@@ -10,10 +11,16 @@ const { Filesystem } = Plugins;
   providedIn: "root",
 })
 export class FileService {
-  constructor(private db: DbService, private fileOpener: FileOpener) {}
+  constructor(
+    private db: DbService,
+    private fileOpener: FileOpener,
+    private analytics: AnalyticsService
+  ) {}
   async openAttachment(attachment: IAttachment) {
-    // Get Attachment
     const { attachmentId, docId, content_type } = attachment;
+    // log to analytics
+    this.analytics.logEvent("open_attachment", { attachmentId });
+    // Get Attachment
     const data = await this.db.getAttachment("activities", docId, attachmentId);
     const file = new Blob([data], { type: content_type });
     const fileURL = URL.createObjectURL(file);

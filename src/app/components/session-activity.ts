@@ -4,8 +4,21 @@ import { FileService } from "../services/file.service";
 
 @Component({
   selector: "app-session-activity",
+  styles: [
+    `
+      :host {
+        display: block;
+      }
+      .activity-card {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        padding: 1em;
+      }
+    `,
+  ],
   template: `
-    <ion-card class="ion-padding" *ngIf="_activity">
+    <ion-card class="ion-padding" *ngIf="_activity" class="activity-card">
       <ion-card-title>Session: {{ index + 1 }}</ion-card-title>
       <ion-card-subtitle>{{ _activity.title }}</ion-card-subtitle>
       <ion-card-content>{{ _activity.description }}</ion-card-content>

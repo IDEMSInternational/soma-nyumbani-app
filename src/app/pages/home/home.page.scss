@@ -9,9 +9,8 @@
   text-align: center;
 }
 
-.app-version {
-  position: absolute;
-  right: 5px;
-  top: 35px;
-  opacity: 0.2;
+.activities-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 1rem;
 }

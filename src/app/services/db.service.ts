@@ -18,6 +18,15 @@ const localDBs = {
   providedIn: "root",
 })
 export class DbService {
+  /***************************************************************************
+   * Public Variables
+   * These can be accessed directly by components.
+   * Varaibles ending '$' denote dynamic variables that will change as the
+   * database is populated, and so should be used with an async pipe to track
+   * ```
+   * <div *ngFor="let activity of dbService.activities | async">
+   * ```
+   ***************************************************************************/
   activeDay: number;
   activities$ = new BehaviorSubject<{
     [activityId: string]: ISessionActivity & IDBDoc;
@@ -25,12 +34,12 @@ export class DbService {
   dailySessions$ = new BehaviorSubject<(IDailySession & IDBDoc)[]>([]);
 
   constructor() {
-    this.activeDay = Number(localStorage.getItem("activeDay") || "1");
-    Object.keys(localDBs).forEach((endpoint) =>
-      this.loadDB(endpoint as IDBEndpoint)
-    );
-    this._syncRemoteDBs();
+    this.initDBService();
   }
+  /***************************************************************************
+   * Public Methods
+   * These can be called by other components or services
+   ***************************************************************************/
 
   public getAttachment(
     endpoint: IDBEndpoint,
@@ -45,6 +54,26 @@ export class DbService {
     this.activeDay = index;
   }
 
+  /***************************************************************************
+   * Private Methods
+   * These are used internally to manage the database
+   ***************************************************************************/
+
+  /**
+   * load saved active day, load database for each endpoint and sync with server
+   */
+  private initDBService() {
+    this.activeDay = Number(localStorage.getItem("activeDay") || "1");
+    Object.keys(localDBs).forEach((endpoint) =>
+      this.loadDB(endpoint as IDBEndpoint)
+    );
+    this._syncRemoteDBs();
+  }
+
+  /**
+   * Bootstrap script to populate local variables with database values
+   * for access by display components
+   */
   private async loadDB(endpoint: IDBEndpoint) {
     const { rows } = await localDBs[endpoint].allDocs<any>({
       attachments: false,
@@ -61,6 +90,9 @@ export class DbService {
     }
   }
 
+  /**
+   * Establish a connection to remote database and synchronise documents
+   */
   private _syncRemoteDBs() {
     Object.keys(localDBs).forEach((endpoint) => {
       const remote = `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`;
