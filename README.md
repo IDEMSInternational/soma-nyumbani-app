@@ -10,6 +10,16 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 When building for production the following environment needs to be defined:
 
-- `src/environments/firebaseConfig.prod.ts`
+`src/environments/firebaseConfig.prod.ts`  
+ This should be in the format of a default export of the firebase config json, i.e.
 
-By default these are populated during CI processes
+```
+export default {
+  apiKey: "",
+  authDomain: "",
+  measurementId: "",
+  ...
+};
+```
+
+Or any other logic that results in a correct default export
