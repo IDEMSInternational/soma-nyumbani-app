@@ -49,3 +49,6 @@ Thumbs.db
 # Prefer yarn
 package-lock.json
 android/.idea
+
+android/app/google-services.json
+src/environments/firebaseConfig.prod.ts

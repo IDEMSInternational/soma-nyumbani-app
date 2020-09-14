@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "soma-nyumbani-app": {
+      "hosting": {
+        "app": [
+          "soma-nyumbani-app"
+        ]
+      }
+    }
+  }
+}
