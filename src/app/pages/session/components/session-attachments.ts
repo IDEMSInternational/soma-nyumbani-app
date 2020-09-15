@@ -81,7 +81,6 @@ export class SessionAttachmentsComponent implements OnInit {
     }
   }
   private async _prepareAttachments(session: ISessionMeta & IDBDoc) {
-    console.log("prepare attachments", session);
     const attachments = session.attachments || {};
     const downloads = session._attachments || {};
     this.attachments = Object.entries(attachments).map(

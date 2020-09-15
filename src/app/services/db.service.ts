@@ -147,7 +147,6 @@ export class DbService {
    * without automatically including attachments (allow manual download later)
    */
   private async _replicateRemoteDBWithoutAttachments(endpoint: IDBEndpoint) {
-    console.log("replicating without attachments", endpoint);
     const local = localDBs[endpoint];
     // Retrieve all changes in batch since last update
     const latestSeq = await this._getLatestChangeSeq(local);
@@ -169,10 +168,10 @@ export class DbService {
         include_docs: true,
         live: true,
       })
-      .on("change", (update) => {
+      .on("change", async (update) => {
         console.log("change", update);
-        this._processCustomDBChanges(local, [update]);
-        this.loadDB(endpoint);
+        await this._processCustomDBChanges(local, [update]);
+        await this.loadDB(endpoint);
       })
       .on("error", (err) => {
         console.error(endpoint, err);
@@ -213,7 +212,13 @@ export class DbService {
         return doc;
       });
     for (const doc of docs) {
-      await db.put(doc, { force: true });
+      // check for existing doc, if exists include savied attachments
+      const existing = await db.get(doc._id).catch((err) => null);
+      if (existing) {
+        doc._attachments = existing._attachments;
+        doc._rev = existing._rev;
+      }
+      await db.put(doc);
     }
   }
 }
