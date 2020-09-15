@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu side="start" type="overlay" contentId="main">
+  <ion-menu side="start" type="overlay" contentId="main" #menu>
     <ion-header>
       <ion-toolbar color="secondary">
         <ion-title>Menu</ion-title>
@@ -7,36 +7,37 @@
     </ion-header>
     <ion-content>
       <ion-list style="height: 100%; display: flex; flex-direction: column">
-        <ion-item button routerLink="/about"
-          ><ion-icon name="information-circle-outline" slot="start"></ion-icon>
-          <ion-label>About</ion-label></ion-item
-        >
-        <ion-item button routerLink="/sessions"
-          ><ion-icon name="grid" slot="start"></ion-icon>
-          <ion-label>Sessions</ion-label></ion-item
-        >
-        <ion-item button routerLink="/search"
-          ><ion-icon name="search" slot="start"></ion-icon>
-          <ion-label>Search Topics</ion-label></ion-item
-        >
-        <ion-item button routerLink="/downloads"
-          ><ion-icon name="download" slot="start"></ion-icon>
-          <ion-label>Downloads</ion-label></ion-item
-        >
+        <!-- top items -->
+        <ion-item button (click)="menu.close()" routerLink="/about">
+          <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+          <ion-label>About</ion-label>
+        </ion-item>
+        <ion-item button (click)="menu.close()" routerLink="/sessions">
+          <ion-icon name="grid" slot="start"></ion-icon>
+          <ion-label>Sessions</ion-label>
+        </ion-item>
+        <ion-item button (click)="menu.close()" routerLink="/search">
+          <ion-icon name="search" slot="start"></ion-icon>
+          <ion-label>Search Topics</ion-label>
+        </ion-item>
+        <ion-item button (click)="menu.close()" routerLink="/downloads">
+          <ion-icon name="download" slot="start"></ion-icon>
+          <ion-label>Downloads</ion-label>
+        </ion-item>
         <!-- bottom items -->
         <div style="margin-top: auto"></div>
-        <ion-item button routerLink="/privacy">
-          <ion-label>Privacy Policy</ion-label></ion-item
-        >
-        <ion-item button routerLink="/terms">
-          <ion-label>Terms and Conditions</ion-label></ion-item
-        >
-        <ion-item button routerLink="/contact">
-          <ion-label>Contact</ion-label></ion-item
-        >
+        <ion-item button (click)="menu.close()" routerLink="/privacy">
+          <ion-label>Privacy Policy</ion-label>
+        </ion-item>
+        <ion-item button (click)="menu.close()" routerLink="/terms">
+          <ion-label>Terms and Conditions</ion-label>
+        </ion-item>
+        <ion-item button (click)="menu.close()" routerLink="/contact">
+          <ion-label>Contact</ion-label>
+        </ion-item>
         <ion-item lines="none" class="app-version">
-          <span slot="end">v{{ APP_VERSION }}</span></ion-item
-        >
+          <span slot="end">v{{ APP_VERSION }}</span>
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>
