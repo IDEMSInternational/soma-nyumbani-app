@@ -44,6 +44,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/contact/contact.module").then((m) => m.ContactPageModule),
   },
+  {
+    path: "privacy",
+    loadChildren: () =>
+      import("./pages/privacy/privacy.module").then((m) => m.PrivacyPageModule),
+  },
   // If page doesn't exist just redirect
   { path: "**", redirectTo: "day/1" },
 ];

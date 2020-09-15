@@ -197,10 +197,33 @@
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
-      "styleext": "scss"
+      "styleext": "scss",
+      "lintFix": true
     },
     "@ionic/angular-toolkit:page": {
-      "styleext": "scss"
+      "styleext": "scss",
+      "lintFix": true
+    },
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss",
+      "lintFix": true
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app",
+      "lintFix": true
+    },
+    "@schematics/angular:pipe": {
+      "lintFix": true
+    },
+    "@schematics/angular:class": {
+      "lintFix": true
+    },
+    "@schematics/angular:module": {
+      "lintFix": true
+    },
+    "@schematics/angular:service": {
+      "lintFix": true
     }
   }
 }
