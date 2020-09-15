@@ -7,7 +7,7 @@ import { IonicModule } from "@ionic/angular";
 import { DayPageRoutingModule } from "./day-routing.module";
 
 import { DayPage } from "./day.page";
-import { AppComponentsModule } from "../components";
+import { AppComponentsModule } from "../../components";
 
 @NgModule({
   imports: [

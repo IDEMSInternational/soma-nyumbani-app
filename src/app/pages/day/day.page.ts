@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { DbService } from "../services/db.service";
+import { DbService } from "../../services/db.service";
 
 @Component({
   selector: "app-day",

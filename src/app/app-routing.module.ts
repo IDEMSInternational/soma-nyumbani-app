@@ -9,37 +9,40 @@ const routes: Routes = [
   },
   {
     path: "day/:dayId",
-    loadChildren: () => import("./day/day.module").then((m) => m.DayPageModule),
+    loadChildren: () =>
+      import("./pages/day/day.module").then((m) => m.DayPageModule),
   },
   {
     path: "day/:dayId/session/:sessionId",
     loadChildren: () =>
-      import("./session/session.module").then((m) => m.SessionPageModule),
+      import("./pages/session/session.module").then((m) => m.SessionPageModule),
   },
   {
     path: "about",
     loadChildren: () =>
-      import("./about/about.module").then((m) => m.AboutPageModule),
+      import("./pages/about/about.module").then((m) => m.AboutPageModule),
   },
   {
     path: "downloads",
     loadChildren: () =>
-      import("./downloads/downloads.module").then((m) => m.DownloadsPageModule),
+      import("./pages/downloads/downloads.module").then(
+        (m) => m.DownloadsPageModule
+      ),
   },
   {
     path: "search",
     loadChildren: () =>
-      import("./search/search.module").then((m) => m.SearchPageModule),
+      import("./pages/search/search.module").then((m) => m.SearchPageModule),
   },
   {
     path: "terms",
     loadChildren: () =>
-      import("./terms/terms.module").then((m) => m.TermsPageModule),
+      import("./pages/terms/terms.module").then((m) => m.TermsPageModule),
   },
   {
     path: "contact",
     loadChildren: () =>
-      import("./contact/contact.module").then((m) => m.ContactPageModule),
+      import("./pages/contact/contact.module").then((m) => m.ContactPageModule),
   },
   // If page doesn't exist just redirect
   { path: "**", redirectTo: "day/1" },
