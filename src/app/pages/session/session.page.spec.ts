@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { IonicModule } from "@ionic/angular";
 
-import { SessionPage } from './session.page';
+import { SessionPage } from "./session.page";
 
-describe('SessionPage', () => {
+describe("SessionPage", () => {
   let component: SessionPage;
   let fixture: ComponentFixture<SessionPage>;
 
@@ -18,7 +18,7 @@ describe('SessionPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

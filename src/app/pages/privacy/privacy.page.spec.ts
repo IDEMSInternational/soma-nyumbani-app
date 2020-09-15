@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { IonicModule } from "@ionic/angular";
 
-import { PrivacyPage } from './privacy.page';
+import { PrivacyPage } from "./privacy.page";
 
-describe('PrivacyPage', () => {
+describe("PrivacyPage", () => {
   let component: PrivacyPage;
   let fixture: ComponentFixture<PrivacyPage>;
 
@@ -18,7 +18,7 @@ describe('PrivacyPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

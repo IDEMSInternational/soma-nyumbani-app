@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { IonicModule } from "@ionic/angular";
 
-import { ContactPage } from './contact.page';
+import { ContactPage } from "./contact.page";
 
-describe('ContactPage', () => {
+describe("ContactPage", () => {
   let component: ContactPage;
   let fixture: ComponentFixture<ContactPage>;
 
@@ -18,7 +18,7 @@ describe('ContactPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
