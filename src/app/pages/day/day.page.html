@@ -9,29 +9,26 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="day-nav">
-    <ion-button
-      fill="clear"
-      [disabled]="db.activeDay===1"
-      (click)="db.setActiveDay(db.activeDay-1)"
+    <ion-button fill="clear" [disabled]="dayId===1" (click)="goToDay(dayId-1)"
       ><ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon
     ></ion-button>
-    <h2>Day {{db.activeDay}}</h2>
+    <h2>Day {{dayId}}</h2>
     <ion-button
       fill="clear"
-      [disabled]="db.activeDay===(db.dailySessions$ | async).length"
-      (click)="db.setActiveDay(db.activeDay+1)"
+      [disabled]="dayId===(db.days$ | async).length"
+      (click)="goToDay(dayId+1)"
       ><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon
     ></ion-button>
   </div>
   <!-- Active Session Template -->
-  <div *ngIf="(db.dailySessions$ | async)[db.activeDay-1] as session">
-    <div class="activities-container">
-      <app-session-activity
-        *ngFor="let activityId of session.activities, index as j"
-        [activity]="(db.activities$ | async)[activityId]"
+  <div *ngIf="(db.days$ | async)[dayId-1] as day">
+    <div class="sessions-container">
+      <app-session-summary-card
+        *ngFor="let sessionId of day.sessions, index as j"
+        [session]="(db.sessions$ | async)[sessionId]"
         [index]="j"
         [routerLink]="['session',j+1]"
-      ></app-session-activity>
+      ></app-session-summary-card>
     </div>
   </div>
 </ion-content>

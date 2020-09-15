@@ -19,9 +19,7 @@ export class UserService {
 
   loadUser() {
     const user = localStorage.getItem("user");
-    if (user) {
-      this.user = JSON.parse(user);
-    }
+    this.user = user ? JSON.parse(user) : DEFAULT_USER;
   }
 
   updateUser(update: any) {
@@ -59,4 +57,9 @@ export class UserService {
 
 interface IUser {
   uid?: string; // populated by auth on registration
+  activeDay: number;
 }
+
+const DEFAULT_USER: IUser = {
+  activeDay: 1,
+};

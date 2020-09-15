@@ -1,15 +1,15 @@
 import { Component, Input } from "@angular/core";
-import { ISessionActivity, IDBDoc } from "src/types";
-import { FileService } from "../services/file.service";
+import { ISessionMeta, IDBDoc } from "src/types";
+import { FileService } from "src/app/services/file.service";
 
 @Component({
-  selector: "app-session-activity",
+  selector: "app-session-summary-card",
   styles: [
     `
       :host {
         display: block;
       }
-      .activity-card {
+      .session-card {
         margin: 0;
         height: 100%;
         width: 100%;
@@ -18,10 +18,10 @@ import { FileService } from "../services/file.service";
     `,
   ],
   template: `
-    <ion-card class="ion-padding" *ngIf="_activity" class="activity-card">
+    <ion-card class="ion-padding" *ngIf="_session" class="session-card">
       <ion-card-title>Session: {{ index + 1 }}</ion-card-title>
-      <ion-card-subtitle>{{ _activity.title }}</ion-card-subtitle>
-      <ion-card-content>{{ _activity.description }}</ion-card-content>
+      <ion-card-subtitle>{{ _session.title }}</ion-card-subtitle>
+      <ion-card-content>{{ _session.description }}</ion-card-content>
       <ion-button
         *ngFor="let attachment of attachments"
         (click)="fileService.openAttachment(attachment)"
@@ -36,22 +36,22 @@ import { FileService } from "../services/file.service";
     </ion-card>
   `,
 })
-export class SessionActivityComponent {
-  @Input() set activity(activity: ISessionActivity & IDBDoc) {
-    if (activity) {
-      this._activity = activity;
-      this.attachments = this._prepareAttachments(activity);
+export class SessionSummaryCardComponent {
+  @Input() set session(session: ISessionMeta & IDBDoc) {
+    if (session) {
+      this._session = session;
+      this.attachments = this._prepareAttachments(session);
     }
   }
   @Input() index: number;
   attachments: any[];
-  public _activity: ISessionActivity;
+  public _session: ISessionMeta;
   constructor(public fileService: FileService) {}
 
-  _prepareAttachments(activity: ISessionActivity & IDBDoc) {
-    const attachments = activity._attachments || {};
+  _prepareAttachments(session: ISessionMeta & IDBDoc) {
+    const attachments = session._attachments || {};
     return Object.entries(attachments).map(([attachmentId, meta]) => ({
-      docId: activity._id,
+      docId: session._id,
       attachmentId,
       ...meta,
     }));

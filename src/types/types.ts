@@ -1,8 +1,10 @@
-export interface IDailySession {
+export { IDBEndpoint } from "../app/services/db.service";
+
+export interface IDayMeta {
   title: string;
-  activities: string[];
+  sessions: string[];
 }
-export interface ISessionActivity {
+export interface ISessionMeta {
   title: string;
   description: string;
   tags: string[];

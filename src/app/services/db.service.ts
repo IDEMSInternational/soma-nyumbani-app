@@ -3,15 +3,15 @@ import { Injectable } from "@angular/core";
 import * as PouchDBDist from "pouchdb/dist/pouchdb";
 import * as PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
-import { ISessionActivity, IDailySession, IDBDoc } from "src/types";
+import { ISessionMeta, IDayMeta, IDBDoc } from "src/types";
 const PouchDB: typeof PouchDBDefault = PouchDBDist;
 
 const DB_USER = "somanyumbani_app";
 const DB_PASS = "somanyumbani_app";
 const DB_DOMAIN = "db.somanyumbani.com";
 const localDBs = {
-  activities: new PouchDB("somanyumbani_activities"),
-  daily_sessions: new PouchDB("somanyumbani_daily_sessions"),
+  sessions: new PouchDB("somanyumbani_sessions"),
+  days: new PouchDB("somanyumbani_days"),
 };
 
 @Injectable({
@@ -24,14 +24,13 @@ export class DbService {
    * Varaibles ending '$' denote dynamic variables that will change as the
    * database is populated, and so should be used with an async pipe to track
    * ```
-   * <div *ngFor="let activity of dbService.activities | async">
+   * <div *ngFor="let session of dbService.sessions$ | async">
    * ```
    ***************************************************************************/
-  activeDay: number;
-  activities$ = new BehaviorSubject<{
-    [activityId: string]: ISessionActivity & IDBDoc;
+  sessions$ = new BehaviorSubject<{
+    [sessionId: string]: ISessionMeta & IDBDoc;
   }>({});
-  dailySessions$ = new BehaviorSubject<(IDailySession & IDBDoc)[]>([]);
+  days$ = new BehaviorSubject<(IDayMeta & IDBDoc)[]>([]);
 
   constructor() {
     this.initDBService();
@@ -49,11 +48,6 @@ export class DbService {
     return localDBs[endpoint].getAttachment(docId, attachmentId);
   }
 
-  public setActiveDay(index: number) {
-    localStorage.setItem("activeDay", index.toString());
-    this.activeDay = index;
-  }
-
   /***************************************************************************
    * Private Methods
    * These are used internally to manage the database
@@ -63,7 +57,6 @@ export class DbService {
    * load saved active day, load database for each endpoint and sync with server
    */
   private initDBService() {
-    this.activeDay = Number(localStorage.getItem("activeDay") || "1");
     Object.keys(localDBs).forEach((endpoint) =>
       this.loadDB(endpoint as IDBEndpoint)
     );
@@ -81,12 +74,12 @@ export class DbService {
     });
     const docs = rows.map((r) => r.doc);
     switch (endpoint) {
-      case "activities":
-        const activitiesHash = {};
-        docs.forEach((d) => (activitiesHash[d._id] = d));
-        return this.activities$.next(activitiesHash);
-      case "daily_sessions":
-        return this.dailySessions$.next(docs);
+      case "days":
+        return this.days$.next(docs);
+      case "sessions":
+        const sessions = {};
+        docs.forEach((d) => (sessions[d._id] = d));
+        return this.sessions$.next(sessions);
     }
   }
 
@@ -114,4 +107,4 @@ export class DbService {
     });
   }
 }
-type IDBEndpoint = keyof typeof localDBs;
+export type IDBEndpoint = keyof typeof localDBs;

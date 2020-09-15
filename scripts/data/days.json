@@ -2,7 +2,7 @@
   {
     "_id": "day-01",
     "title": "Day 1",
-    "activities": [
+    "sessions": [
       "counting-squares",
       "mirroring-moves",
       "understanding-covid-19-prevention",
@@ -12,7 +12,7 @@
   {
     "_id": "day-02",
     "title": "Day 2",
-    "activities": [
+    "sessions": [
       "environmental-news",
       "collatz-conjecture",
       "daily-planning",

@@ -1,39 +1,32 @@
 import * as fs from "fs-extra";
 import axios from "axios";
+import { IDBEndpoint } from "../src/types";
 
 const DB_URL = "https://somanyumbani_app:somanyumbani_app@db.somanyumbani.com";
 
 async function main() {
-  await uploadDailySessions();
-  await uploadActivities();
+  await populateDB("days");
+  await populateDB("sessions");
 }
 
-async function uploadDailySessions() {
-  const database = "somanyumbani_daily_sessions";
-  const localJson = "scripts/data/daily_sessions.json";
-  const dbDocsHash = await getAllDocsHash(database);
-  const localRows = fs.readJSONSync(localJson);
-  localRows.forEach((row, index) => {
+/**
+ * Populate database rows from json file. Merges data with existing rows (to not overwrite uploads where available)
+ * @param database - suffix name of database to populate (e.g. 'days' will populate 'somanyumbani_days')
+ * @param jsonPath - path to file with rows to update. Default will be scripts/data/{database}.json
+ */
+async function populateDB(database: IDBEndpoint, jsonPath?: string) {
+  jsonPath = jsonPath || `scripts/data/${database}.json`;
+  const dbDocsHash = await getAllDocsHash(`somanyumbani_${database}`);
+  const localRows = fs.readJSONSync(jsonPath);
+  localRows.forEach((row: any, index: number) => {
     if (row._id && dbDocsHash[row._id]) {
       localRows[index] = { ...dbDocsHash[row._id], ...row };
     }
   });
-  const res = await postBatchDocs(database, localRows);
-  console.log("daily session upload summary:", res);
+  const res = await postBatchDocs(`somanyumbani_${database}`, localRows);
+  console.log(`[${database}] - ${localRows.length} rows populated`);
 }
-async function uploadActivities() {
-  const database = "somanyumbani_activities";
-  const localJson = "scripts/data/activities.json";
-  const dbDocsHash = await getAllDocsHash(database);
-  const localRows = fs.readJSONSync(localJson);
-  localRows.forEach((row, index) => {
-    if (row._id && dbDocsHash[row._id]) {
-      localRows[index] = { ...dbDocsHash[row._id], ...row };
-    }
-  });
-  const res = await postBatchDocs(database, localRows);
-  console.log("activity upload summary:", res);
-}
+
 /**
  * Retrieve all docs from a couch database
  * @param database database name

@@ -21,7 +21,7 @@ export class FileService {
     // log to analytics
     this.analytics.logEvent("open_attachment", { attachmentId });
     // Get Attachment
-    const data = await this.db.getAttachment("activities", docId, attachmentId);
+    const data = await this.db.getAttachment("sessions", docId, attachmentId);
     const file = new Blob([data], { type: content_type });
     const fileURL = URL.createObjectURL(file);
     // Open - Native

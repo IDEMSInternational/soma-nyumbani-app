@@ -8,6 +8,7 @@ import { DayPageRoutingModule } from "./day-routing.module";
 
 import { DayPage } from "./day.page";
 import { AppComponentsModule } from "../../components";
+import { SessionSummaryCardComponent } from "./components/session-summary-card";
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { AppComponentsModule } from "../../components";
     DayPageRoutingModule,
     AppComponentsModule,
   ],
-  declarations: [DayPage],
+  declarations: [DayPage, SessionSummaryCardComponent],
 })
 export class DayPageModule {}
