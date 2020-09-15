@@ -30,6 +30,7 @@
         *ngFor="let activityId of session.activities, index as j"
         [activity]="(db.activities$ | async)[activityId]"
         [index]="j"
+        [routerLink]="['session',j+1]"
       ></app-session-activity>
     </div>
   </div>
