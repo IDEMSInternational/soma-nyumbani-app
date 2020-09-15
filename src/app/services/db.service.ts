@@ -60,7 +60,7 @@ export class DbService {
     Object.keys(localDBs).forEach((endpoint) =>
       this.loadDB(endpoint as IDBEndpoint)
     );
-    this._syncRemoteDBs();
+    this.syncRemoteDBs();
   }
 
   /**
@@ -84,27 +84,111 @@ export class DbService {
   }
 
   /**
-   * Establish a connection to remote database and synchronise documents
+   * Handle data replication between server and client
+   * Note - endpoints are handled differently depending on whetheer we want to include attached
+   * docs during replication or not
    */
-  private _syncRemoteDBs() {
-    Object.keys(localDBs).forEach((endpoint) => {
-      const remote = `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`;
-      PouchDB.replicate(remote, localDBs[endpoint], {
-        live: true,
-        retry: true,
-        batch_size: 1,
-      })
-        .on("change", (info) => this.loadDB(endpoint as IDBEndpoint))
-        .on("paused", (err) => console.log("sync paused", endpoint, err))
-        .on("active", () => console.log("sync active", endpoint))
-        .on("denied", (err) => console.log("sync denied", endpoint, err))
-        .on("complete", (info) => console.log("sync complete", endpoint, info))
-        .on("error", (err) => {
-          console.error(endpoint, err);
-          throw new Error(`${endpoint} sync error: ${err}`);
-          // handle error
-        });
+  private syncRemoteDBs() {
+    this._replicateRemoteDB("days");
+    this._replicateRemoteDBWithoutAttachments("sessions");
+  }
+  /**
+   * Use PouchDB replicate method for a 1-way sync from server to local DB
+   */
+  private _replicateRemoteDB(endpoint: IDBEndpoint) {
+    const remote = `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`;
+    PouchDB.replicate(remote, localDBs[endpoint], {
+      live: true,
+      retry: true,
+      batch_size: 50,
+    })
+      .on("change", (info) => this.loadDB(endpoint as IDBEndpoint))
+      .on("paused", (err) => console.log("sync paused", endpoint, err))
+      .on("active", () => console.log("sync active", endpoint))
+      .on("denied", (err) => console.log("sync denied", endpoint, err))
+      .on("complete", (info) => console.log("sync complete", endpoint, info))
+      .on("error", (err) => {
+        console.error(endpoint, err);
+        throw new Error(`${endpoint} sync error: ${err}`);
+        // handle error
+      });
+  }
+  /**
+   * Custom replication method to allow 1-way sync from server to client, but
+   * without automatically including attachments (allow manual download later)
+   */
+  private async _replicateRemoteDBWithoutAttachments(endpoint: IDBEndpoint) {
+    console.log("replicating without attachments", endpoint);
+    const local = localDBs[endpoint];
+    const remote = new PouchDB(
+      `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`
+    );
+    // Retrieve all changes in batch since last update
+    const latestSeq = await this._getLatestChangeSeq(local);
+    const changes = await remote.changes<any>({
+      attachments: false,
+      since: latestSeq,
+      batch_size: 200,
+      include_docs: true,
     });
+    await this._processCustomDBChanges(local, changes.results);
+    await this.loadDB(endpoint);
+    // Stream future changes
+    const updatedLatestSeq = await this._getLatestChangeSeq(local);
+    const liveChanges = await remote
+      .changes<any>({
+        attachments: false,
+        since: updatedLatestSeq,
+        batch_size: 1,
+        include_docs: true,
+        live: true,
+      })
+      .on("change", (update) => {
+        console.log("change", update);
+        this._processCustomDBChanges(local, [update]);
+        this.loadDB(endpoint);
+      })
+      .on("error", (err) => {
+        console.error(endpoint, err);
+        throw new Error(`${endpoint} sync error: ${err}`);
+      });
+  }
+  /**
+   * Simple method to retrieve the latest edited document in the database
+   */
+  async _getLatestChangeSeq(db: PouchDB.Database) {
+    const latest = await db.changes<any>({
+      limit: 1,
+      descending: true,
+      include_docs: true,
+    });
+    const seq = latest.results[0] ? latest.results[0].doc.seq : 0;
+    return seq;
+  }
+
+  /**
+   * Extract _attachments stub and save to 'attachments' so that they can be persisted to the database
+   * without the full downloaded attachment
+   * Add the remote database 'seq' identifier to keep track of the latest remote and local changes
+   */
+  async _processCustomDBChanges(
+    db: PouchDB.Database,
+    changes: PouchDB.Core.ChangesResponseChange<any>[]
+  ) {
+    const docs = changes
+      .filter((c) => c.id[0] !== "_")
+      .map((c) => {
+        const { doc, seq } = c;
+        if (doc.hasOwnProperty("_attachments")) {
+          doc.attachments = doc._attachments;
+          delete doc._attachments;
+        }
+        doc.seq = seq;
+        return doc;
+      });
+    for (const doc of docs) {
+      await db.put(doc, { force: true });
+    }
   }
 }
 export type IDBEndpoint = keyof typeof localDBs;
