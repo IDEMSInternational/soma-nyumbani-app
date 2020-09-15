@@ -13,6 +13,14 @@ const localDBs = {
   sessions: new PouchDB("somanyumbani_sessions"),
   days: new PouchDB("somanyumbani_days"),
 };
+const remoteDBs = {
+  sessions: new PouchDB(
+    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_sessions`
+  ),
+  days: new PouchDB(
+    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_days`
+  ),
+};
 
 @Injectable({
   providedIn: "root",
@@ -39,6 +47,28 @@ export class DbService {
    * Public Methods
    * These can be called by other components or services
    ***************************************************************************/
+  /**
+   * Sync the attachment from a server doc to a local doc
+   * Required for custom sync protocol where attachments aren't automatically replicated
+   */
+  public async downloadAttachment(
+    endpoint: IDBEndpoint,
+    docId: string,
+    attachmentId: string
+  ) {
+    const attachment = await remoteDBs[endpoint].getAttachment(
+      docId,
+      attachmentId
+    );
+    const { _rev } = await localDBs[endpoint].get(docId);
+    await localDBs[endpoint].putAttachment(
+      docId,
+      attachmentId,
+      _rev,
+      attachment,
+      "text/plain"
+    );
+  }
 
   public getAttachment(
     endpoint: IDBEndpoint,
@@ -96,8 +126,7 @@ export class DbService {
    * Use PouchDB replicate method for a 1-way sync from server to local DB
    */
   private _replicateRemoteDB(endpoint: IDBEndpoint) {
-    const remote = `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`;
-    PouchDB.replicate(remote, localDBs[endpoint], {
+    PouchDB.replicate(remoteDBs[endpoint], localDBs[endpoint], {
       live: true,
       retry: true,
       batch_size: 50,
@@ -120,12 +149,9 @@ export class DbService {
   private async _replicateRemoteDBWithoutAttachments(endpoint: IDBEndpoint) {
     console.log("replicating without attachments", endpoint);
     const local = localDBs[endpoint];
-    const remote = new PouchDB(
-      `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_${endpoint}`
-    );
     // Retrieve all changes in batch since last update
     const latestSeq = await this._getLatestChangeSeq(local);
-    const changes = await remote.changes<any>({
+    const changes = await remoteDBs[endpoint].changes<any>({
       attachments: false,
       since: latestSeq,
       batch_size: 200,
@@ -135,7 +161,7 @@ export class DbService {
     await this.loadDB(endpoint);
     // Stream future changes
     const updatedLatestSeq = await this._getLatestChangeSeq(local);
-    const liveChanges = await remote
+    await remoteDBs[endpoint]
       .changes<any>({
         attachments: false,
         since: updatedLatestSeq,

@@ -16,6 +16,7 @@ export class FileService {
     private fileOpener: FileOpener,
     private analytics: AnalyticsService
   ) {}
+
   async openAttachment(attachment: IAttachment) {
     const { attachmentId, docId, content_type } = attachment;
     // log to analytics
