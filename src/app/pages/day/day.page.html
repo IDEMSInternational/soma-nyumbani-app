@@ -23,12 +23,16 @@
   <!-- Active Session Template -->
   <div *ngIf="(db.days$ | async)[dayId-1] as day">
     <div class="sessions-container">
-      <app-session-summary-card
-        *ngFor="let sessionId of day.sessions, index as j"
-        [session]="(db.sessions$ | async)[sessionId]"
-        [index]="j"
-        [routerLink]="['session',j+1]"
-      ></app-session-summary-card>
+      <div *ngFor="let sessionId of day.sessions, index as j">
+        <ion-card
+          *ngIf="(db.sessions$ | async)[sessionId] as session"
+          class="session-card"
+          [routerLink]="['session',j+1]"
+        >
+          <ion-card-title>Session: {{ j + 1 }}</ion-card-title>
+          <ion-card-subtitle>{{ session.title }}</ion-card-subtitle>
+        </ion-card>
+      </div>
     </div>
   </div>
 </ion-content>

@@ -8,9 +8,8 @@ export interface ISessionMeta {
   title: string;
   description: string;
   tags: string[];
-  _attachments: {
-    [filename: string]: IDBAttachmentStub;
-  };
+  // custom attachments entry to keep non-binary attachment stub
+  attachments?: { [filename: string]: IDBAttachmentStub };
 }
 
 /**
@@ -32,4 +31,5 @@ export interface IDBDoc {
   _id: string;
   _rev: string;
   _deleted?: boolean;
+  _attachments?: { [filename: string]: IDBAttachmentStub };
 }

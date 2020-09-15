@@ -11,6 +11,12 @@
 
 .sessions-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-gap: 1rem;
+}
+.session-card {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  padding: 1em;
 }

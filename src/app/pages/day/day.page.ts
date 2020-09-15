@@ -8,17 +8,16 @@ import { ActivatedRoute, Router } from "@angular/router";
   templateUrl: "./day.page.html",
   styleUrls: ["./day.page.scss"],
 })
-export class DayPage implements OnInit {
+export class DayPage {
   dayId: number;
   constructor(
     public db: DbService,
     public userService: UserService,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private router: Router
   ) {
     this.dayId = Number(route.snapshot.params.dayId || 1);
   }
-  ngOnInit() {}
 
   goToDay(dayId: number) {
     this.router.navigate(["day", dayId]);
