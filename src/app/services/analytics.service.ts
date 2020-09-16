@@ -3,7 +3,9 @@ import { NavigationEnd, Router } from "@angular/router";
 import "@capacitor-community/firebase-analytics";
 import { FirebaseAnalyticsWeb } from "@capacitor-community/firebase-analytics";
 import { Plugins, Capacitor } from "@capacitor/core";
-import { AlertController } from "@ionic/angular";
+import { PopoverController } from "@ionic/angular";
+import { environment } from "src/environments/environment";
+import { AnalyticsConsentComponent } from "../components/analyticsConsent";
 const { FirebaseAnalytics } = Plugins;
 const Analytics = FirebaseAnalytics as FirebaseAnalyticsWeb;
 
@@ -17,25 +19,25 @@ const Analytics = FirebaseAnalytics as FirebaseAnalyticsWeb;
  */
 export class AnalyticsService {
   analyticsEnabled = false;
-  constructor(private router: Router, private alert: AlertController) {}
+  constructor(private router: Router, private popover: PopoverController) {}
 
   /**
    *  Initialise analytics to track route changes and share data
    *  Note - requires installation and initialisation of analytics sdk
    *  and google services json
    *  API - https://github.com/capacitor-community/firebase-analytics
-   *  NOTE - currently only enabled for native, but could be initialised for web
    */
   async init() {
-    if (Capacitor.isNative) {
-      const consented = await this.verifyUserAnalyticsConsent();
-      if (consented) {
-        console.info("analytics enabled");
-        this.analyticsEnabled = true;
-        this._subscribeToRouteChanges();
-      } else {
-        console.info("analytics disabled");
+    const consented = await this.verifyUserAnalyticsConsent();
+    if (consented) {
+      if (!Capacitor.isNative) {
+        Analytics.initializeFirebase(environment.FIREBASE_CONFIG);
       }
+      this.analyticsEnabled = true;
+      console.info("analytics enabled");
+      this._subscribeToRouteChanges();
+    } else {
+      console.info("analytics disabled");
     }
   }
   /**
@@ -71,23 +73,21 @@ export class AnalyticsService {
         resolve(userConsented === "true" ? true : false);
       } else {
         const consented = await this.showConsentDialog();
-        // localStorage.setItem("analytics_user_consented", `${consented}`);
+        localStorage.setItem("analytics_user_consented", `${consented}`);
         resolve(consented);
       }
     });
   }
 
   private async showConsentDialog() {
-    const alert = await this.alert.create({
+    const popover = await this.popover.create({
       cssClass: "my-custom-class",
-      header: "Alert",
-      subHeader: "Subtitle",
-      message: "This is an alert message.",
-      buttons: ["OK"],
+      component: AnalyticsConsentComponent,
+      backdropDismiss: false,
     });
-    await alert.present();
-    const consented: boolean = (await alert.onDidDismiss()).data;
-    console.log("consented", consented);
+
+    await popover.present();
+    const consented: boolean = (await popover.onDidDismiss()).data;
     return consented;
   }
 

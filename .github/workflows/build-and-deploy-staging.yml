@@ -1,10 +1,11 @@
-name: Android Release
+name: Build and Deploy Staging
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
 jobs:
-  build_dist:
-    name: Build Production
+  build_web:
+    name: Build Web
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -19,11 +20,45 @@ jobs:
         run: yarn install
       - name: Configure Production Environment
         run: |
-          echo $FIREBASE_CONFIG_TS > src/environments/firebaseConfig.prod.ts
-        env:
-          FIREBASE_CONFIG_TS: ${{secrets.FIREBASE_CONFIG_TS}}
+          cp src/environments/firebaseConfig.ts src/environments/firebaseConfig.prod.ts
       - name: Build
         run: npm run app:build
+      - name: Store Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: soma-nyumbani-app
+          path: |
+            ./
+            !src
+            !node_modules
+            node_modules/@capacitor
+            node_modules/@capacitor-community
+  deploy_firebase:
+    runs-on: ubuntu-latest
+    needs: [build_web]
+    continue-on-error: true
+    name: Deploy to Firebase Staging
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: soma-nyumbani-app
+      - name: Deploy
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --project staging
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+  build_deploy_android:
+    runs-on: ubuntu-latest
+    needs: [build_web]
+    continue-on-error: true
+    name: Build and Deploy Android to Play Alpha Track
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: soma-nyumbani-app
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
@@ -52,3 +87,13 @@ jobs:
           releaseFile: ${{ env.SIGNED_RELEASE_FILE}}
           track: internal
           #whatsNewDirectory: /distribution/whatsnew
+  cleanup:
+    # NOTE - this will only run if previous action successful, so either ensure passes, or move to cron job
+    needs: [build_deploy_android, deploy_firebase]
+    runs-on: ubuntu-latest
+    name: Delete intermediary artifacts
+    steps:
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: soma-nyumbani-app
+          failOnError: false

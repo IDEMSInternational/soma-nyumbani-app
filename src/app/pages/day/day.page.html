@@ -30,7 +30,9 @@
           [routerLink]="['session',j+1]"
         >
           <ion-card-title>Session: {{ j + 1 }}</ion-card-title>
-          <ion-card-subtitle>{{ session.title }}</ion-card-subtitle>
+          <ion-card-subtitle style="min-height: 3em"
+            >{{ session.title }}</ion-card-subtitle
+          >
         </ion-card>
       </div>
     </div>

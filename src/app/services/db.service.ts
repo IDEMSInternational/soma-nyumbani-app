@@ -4,6 +4,7 @@ import * as PouchDBDist from "pouchdb/dist/pouchdb";
 import * as PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
 import { ISessionMeta, IDayMeta, IDBDoc } from "src/types";
+import { AnalyticsService } from "./analytics.service";
 const PouchDB: typeof PouchDBDefault = PouchDBDist;
 
 const DB_USER = "somanyumbani_app";
@@ -42,7 +43,7 @@ export class DbService {
     [sessionId: string]: ISessionMeta & IDBDoc;
   }>({});
 
-  constructor() {
+  constructor(private analytics: AnalyticsService) {
     this.initDBService();
   }
   /***************************************************************************
@@ -58,17 +59,18 @@ export class DbService {
     docId: string,
     attachmentId: string
   ) {
-    const attachment = await remoteDBs[endpoint].getAttachment(
+    this.analytics.logEvent("download_attachment", { docId, attachmentId });
+    const attachment = (await remoteDBs[endpoint].getAttachment(
       docId,
       attachmentId
-    );
+    )) as Blob;
     const { _rev } = await localDBs[endpoint].get(docId);
     await localDBs[endpoint].putAttachment(
       docId,
       attachmentId,
       _rev,
       attachment,
-      "text/plain"
+      attachment.type
     );
     await this.loadDB(endpoint);
   }
@@ -87,9 +89,9 @@ export class DbService {
     attachmentId: string,
     rev: string
   ) {
-    console.log("removing attachment", endpoint, docId, attachmentId, rev);
     await localDBs[endpoint].removeAttachment(docId, attachmentId, rev);
     await this.loadDB(endpoint);
+    // TODO - also remove temp file written (?)
   }
 
   /***************************************************************************
