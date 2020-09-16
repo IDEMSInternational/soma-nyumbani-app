@@ -1,8 +1,7 @@
 name: Build and Deploy Production
 on:
-  push:
-    branches:
-      - cc/dev
+  release:
+    types: [published]
 jobs:
   build_web:
     name: Build Web
@@ -55,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_web]
     continue-on-error: true
-    name: Build and Deploy Android to Play Alpha Track
+    name: Build and Deploy Android to Play Beta Track
     steps:
       - name: Download Build Artifact
         uses: actions/download-artifact@v2
