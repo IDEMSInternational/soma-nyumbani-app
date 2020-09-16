@@ -29,12 +29,10 @@ ion-card {
   background-color: white;
 }
 
-.border-primary {
-  border: 1px solid var(--ion-color-primary);
-}
-.border-secondary {
-  border: 1px solid var(--ion-color-secondary);
-}
-.border-tertiary {
-  border: 1px solid var(--ion-color-tertiary);
+// Force main content to fill center region with max width (for wide displays)
+ion-content {
+  max-width: 800px;
+  left: 50%;
+  margin-right: -50% !important;
+  transform: translate(-50%);
 }
