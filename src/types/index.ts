@@ -1,1 +1,2 @@
-export * from "./types";
+export * from "./db.types";
+export * from "./user.types";

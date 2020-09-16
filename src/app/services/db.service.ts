@@ -43,9 +43,15 @@ export class DbService {
     [sessionId: string]: ISessionMeta & IDBDoc;
   }>({});
 
-  constructor(private analytics: AnalyticsService) {
-    this.initDBService();
+  constructor(private analytics: AnalyticsService) {}
+
+  public init() {
+    Object.keys(localDBs).forEach((endpoint) =>
+      this.loadDB(endpoint as IDBEndpoint)
+    );
+    this.syncRemoteDBs();
   }
+
   /***************************************************************************
    * Public Methods
    * These can be called by other components or services
@@ -98,16 +104,6 @@ export class DbService {
    * Private Methods
    * These are used internally to manage the database
    ***************************************************************************/
-
-  /**
-   * load saved active day, load database for each endpoint and sync with server
-   */
-  private initDBService() {
-    Object.keys(localDBs).forEach((endpoint) =>
-      this.loadDB(endpoint as IDBEndpoint)
-    );
-    this.syncRemoteDBs();
-  }
 
   /**
    * Bootstrap script to populate local variables with database values

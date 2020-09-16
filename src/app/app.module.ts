@@ -11,10 +11,10 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { environment } from "src/environments/environment";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { AppComponentsModule } from "./components";
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -22,6 +22,7 @@ import { AppRoutingModule } from "./app-routing.module";
     AngularFireModule.initializeApp(environment.FIREBASE_CONFIG),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
+    AppComponentsModule,
   ],
   providers: [
     FileOpener,
