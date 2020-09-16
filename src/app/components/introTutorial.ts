@@ -11,7 +11,8 @@ import { UserService } from "../services/user.service";
   styles: [
     `
       :host {
-        display: contents;
+        display: block;
+        height: 100vh;
       }
       ion-slides {
         height: 100%;

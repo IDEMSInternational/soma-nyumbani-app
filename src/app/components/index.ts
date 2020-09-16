@@ -2,11 +2,10 @@ import { NgModule } from "@angular/core";
 
 import { CommonModule } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
-import { AnalyticsConsentComponent } from "./analyticsConsent";
 import { RouterModule } from "@angular/router";
 import { IntroTutorialComponent } from "./introTutorial";
 
-const AppComponents = [AnalyticsConsentComponent, IntroTutorialComponent];
+const AppComponents = [IntroTutorialComponent];
 
 @NgModule({
   imports: [CommonModule, IonicModule, RouterModule],
