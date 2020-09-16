@@ -25,6 +25,15 @@ export interface IDBAttachmentStub {
 }
 
 /**
+ * Sometimes when working with attachments additional metadata is populated
+ */
+export interface ICustomAttachment extends IDBAttachmentStub {
+  attachmentId: string;
+  docId: string;
+  isDownloaded?: boolean;
+}
+
+/**
  * Base typing for all couchDB docs
  */
 export interface IDBDoc {

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Plugins, FilesystemDirectory, Capacitor } from "@capacitor/core";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
-import { IDBAttachmentStub } from "src/types";
+import { ICustomAttachment } from "src/types";
 import { AnalyticsService } from "./analytics.service";
 import { DbService } from "./db.service";
 
@@ -17,7 +17,7 @@ export class FileService {
     private analytics: AnalyticsService
   ) {}
 
-  async openAttachment(attachment: IAttachment) {
+  async openAttachment(attachment: ICustomAttachment) {
     const { attachmentId, docId, content_type } = attachment;
     // log to analytics
     this.analytics.logEvent("open_attachment", { attachmentId });
@@ -67,7 +67,3 @@ export class FileService {
     }
   }
 }
-type IAttachment = IDBAttachmentStub & {
-  attachmentId: string;
-  docId: string;
-};

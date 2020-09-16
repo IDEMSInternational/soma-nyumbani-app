@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { DbService } from "src/app/services/db.service";
 import { FileService } from "src/app/services/file.service";
-import { IDBAttachmentStub, IDBDoc, ISessionMeta } from "src/types";
+import { ICustomAttachment, IDBDoc, ISessionMeta } from "src/types";
 
 @Component({
   selector: "app-session-attachments",
@@ -45,7 +45,7 @@ import { IDBAttachmentStub, IDBDoc, ISessionMeta } from "src/types";
 })
 export class SessionAttachmentsComponent implements OnInit {
   isDownloading = {};
-  attachments: IAttachment[] = [];
+  attachments: ICustomAttachment[] = [];
   @Input() session: ISessionMeta & IDBDoc;
   constructor(public fileService: FileService, public db: DbService) {}
 
@@ -53,7 +53,7 @@ export class SessionAttachmentsComponent implements OnInit {
     this._prepareAttachments(this.session);
   }
 
-  handleAttachmentClick(attachment: IAttachment, index: number) {
+  handleAttachmentClick(attachment: ICustomAttachment, index: number) {
     if (this.isDownloading[attachment.attachmentId]) {
       return;
     }
@@ -64,7 +64,10 @@ export class SessionAttachmentsComponent implements OnInit {
     }
   }
 
-  private async downloadAttachment(attachment: IAttachment, index: number) {
+  private async downloadAttachment(
+    attachment: ICustomAttachment,
+    index: number
+  ) {
     const { attachmentId } = attachment;
     this.isDownloading[attachmentId] = true;
     try {
@@ -92,10 +95,4 @@ export class SessionAttachmentsComponent implements OnInit {
       })
     );
   }
-}
-
-interface IAttachment extends IDBAttachmentStub {
-  attachmentId: string;
-  docId: string;
-  isDownloaded?: boolean;
 }

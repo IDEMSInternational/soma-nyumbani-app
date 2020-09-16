@@ -35,10 +35,12 @@ export class DbService {
    * <div *ngFor="let session of dbService.sessions$ | async">
    * ```
    ***************************************************************************/
-  sessions$ = new BehaviorSubject<{
+
+  days$ = new BehaviorSubject<(IDayMeta & IDBDoc)[]>([]);
+  sessions$ = new BehaviorSubject<(ISessionMeta & IDBDoc)[]>([]);
+  sessionsById$ = new BehaviorSubject<{
     [sessionId: string]: ISessionMeta & IDBDoc;
   }>({});
-  days$ = new BehaviorSubject<(IDayMeta & IDBDoc)[]>([]);
 
   constructor() {
     this.initDBService();
@@ -68,6 +70,7 @@ export class DbService {
       attachment,
       "text/plain"
     );
+    await this.loadDB(endpoint);
   }
 
   public getAttachment(
@@ -76,6 +79,17 @@ export class DbService {
     attachmentId: string
   ) {
     return localDBs[endpoint].getAttachment(docId, attachmentId);
+  }
+
+  public async removeAttachment(
+    endpoint: IDBEndpoint,
+    docId: string,
+    attachmentId: string,
+    rev: string
+  ) {
+    console.log("removing attachment", endpoint, docId, attachmentId, rev);
+    await localDBs[endpoint].removeAttachment(docId, attachmentId, rev);
+    await this.loadDB(endpoint);
   }
 
   /***************************************************************************
@@ -105,11 +119,14 @@ export class DbService {
     const docs = rows.map((r) => r.doc);
     switch (endpoint) {
       case "days":
-        return this.days$.next(docs);
+        this.days$.next(docs);
+        return;
       case "sessions":
-        const sessions = {};
-        docs.forEach((d) => (sessions[d._id] = d));
-        return this.sessions$.next(sessions);
+        const sessionsById = {};
+        docs.forEach((d) => (sessionsById[d._id] = d));
+        this.sessions$.next(docs);
+        this.sessionsById$.next(sessionsById);
+        return;
     }
   }
 
@@ -218,7 +235,7 @@ export class DbService {
         doc._attachments = existing._attachments;
         doc._rev = existing._rev;
       }
-      await db.put(doc);
+      await db.put(doc, { force: true });
     }
   }
 }

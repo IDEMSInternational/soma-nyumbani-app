@@ -25,7 +25,7 @@
     <div class="sessions-container">
       <div *ngFor="let sessionId of day.sessions, index as j">
         <ion-card
-          *ngIf="(db.sessions$ | async)[sessionId] as session"
+          *ngIf="(db.sessionsById$ | async)[sessionId] as session"
           class="session-card"
           [routerLink]="['session',j+1]"
         >

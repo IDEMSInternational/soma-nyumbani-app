@@ -11,7 +11,7 @@
   <!-- Active Session Template -->
   <div *ngIf="(db.days$ | async)[dayId-1] as day">
     <div *ngIf="day.sessions[sessionNumber-1] as sessionId">
-      <div *ngIf="(db.sessions$ | async)[sessionId] as session">
+      <div *ngIf="(db.sessionsById$ | async)[sessionId] as session">
         <h2>Session {{sessionNumber}} - {{session.title}}</h2>
         <h4>Attachments</h4>
         <app-session-attachments [session]="session"></app-session-attachments>
