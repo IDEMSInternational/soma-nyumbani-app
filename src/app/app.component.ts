@@ -5,6 +5,8 @@ import { Plugins } from "@capacitor/core";
 import { AnalyticsService } from "./services/analytics.service";
 import { UserService } from "./services/user.service";
 import { environment } from "src/environments/environment";
+import { DbService } from "./services/db.service";
+import { ActivatedRoute } from "@angular/router";
 const { SplashScreen } = Plugins;
 
 @Component({
@@ -14,18 +16,24 @@ const { SplashScreen } = Plugins;
 })
 export class AppComponent {
   APP_VERSION = environment.APP_VERSION;
+  // don't show tutorial is somebody is directly navigating to policies, e.g. google bot
+  skipTutorial = ["/privacy", "/terms"].includes(location.pathname);
   constructor(
     private platform: Platform,
     private analyticsService: AnalyticsService,
-    private userService: UserService
+    private dbService: DbService,
+    public route: ActivatedRoute,
+    public userService: UserService
   ) {
     this.initializeApp();
+    console.log("route", route.snapshot);
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.analyticsService.init();
       this.userService.init();
+      this.dbService.init();
     });
   }
 }

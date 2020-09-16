@@ -3,9 +3,9 @@ import { NavigationEnd, Router } from "@angular/router";
 import "@capacitor-community/firebase-analytics";
 import { FirebaseAnalyticsWeb } from "@capacitor-community/firebase-analytics";
 import { Plugins, Capacitor } from "@capacitor/core";
-import { PopoverController } from "@ionic/angular";
+import { takeWhile } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { AnalyticsConsentComponent } from "../components/analyticsConsent";
+import { UserService } from "./user.service";
 const { FirebaseAnalytics } = Plugins;
 const Analytics = FirebaseAnalytics as FirebaseAnalyticsWeb;
 
@@ -19,7 +19,7 @@ const Analytics = FirebaseAnalytics as FirebaseAnalyticsWeb;
  */
 export class AnalyticsService {
   analyticsEnabled = false;
-  constructor(private router: Router, private popover: PopoverController) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   /**
    *  Initialise analytics to track route changes and share data
@@ -28,17 +28,13 @@ export class AnalyticsService {
    *  API - https://github.com/capacitor-community/firebase-analytics
    */
   async init() {
-    const consented = await this.verifyUserAnalyticsConsent();
-    if (consented) {
-      if (!Capacitor.isNative) {
-        Analytics.initializeFirebase(environment.FIREBASE_CONFIG);
-      }
-      this.analyticsEnabled = true;
-      console.info("analytics enabled");
-      this._subscribeToRouteChanges();
-    } else {
-      console.info("analytics disabled");
+    await this._waitForAnalyticsConsent();
+    if (!Capacitor.isNative) {
+      Analytics.initializeFirebase(environment.FIREBASE_CONFIG);
     }
+    this.analyticsEnabled = true;
+    console.info("analytics enabled");
+    this._subscribeToRouteChanges();
   }
   /**
    * Record an event to firebase analytics
@@ -58,37 +54,12 @@ export class AnalyticsService {
     }
   }
   /**
-   * Track locally if user has consented to analytics. Present dialog to
-   * receive consent if not asked.
-   *
-   * By default hide from robots (for seo purposes)
+   * Listen to user changes until they have consented to analytics, then resolve
    */
-  private async verifyUserAnalyticsConsent(): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      const userConsented = localStorage.getItem("analytics_user_consented");
-      const isBot = /bot|googlebot|crawler|spider|robot|crawling/i.test(
-        navigator.userAgent
-      );
-      if (userConsented || isBot) {
-        resolve(userConsented === "true" ? true : false);
-      } else {
-        const consented = await this.showConsentDialog();
-        localStorage.setItem("analytics_user_consented", `${consented}`);
-        resolve(consented);
-      }
-    });
-  }
-
-  private async showConsentDialog() {
-    const popover = await this.popover.create({
-      cssClass: "my-custom-class",
-      component: AnalyticsConsentComponent,
-      backdropDismiss: false,
-    });
-
-    await popover.present();
-    const consented: boolean = (await popover.onDidDismiss()).data;
-    return consented;
+  async _waitForAnalyticsConsent() {
+    return this.userService.user$
+      .pipe(takeWhile((user) => user.analyticsConsent !== true))
+      .toPromise();
   }
 
   /**

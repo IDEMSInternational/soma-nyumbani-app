@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   enable-background="new 0 0 477.673 477.673"
+   height="512"
+   viewBox="0 0 477.673 477.673"
+   width="512"
+   version="1.1"
+   sodipodi:docname="welcome.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <metadata
+     id="metadata139">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs137" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     id="namedview135"
+     showgrid="false"
+     inkscape:zoom="1.3037281"
+     inkscape:cx="138.43603"
+     inkscape:cy="158.49778"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g24" />
+  <g
+     id="g132">
+    <g
+       id="g6">
+      <g
+         id="g4">
+        <path
+           d="m464.032 238.837c0 131.906-93.29 209.831-225.196 209.831s-219.77-79.417-219.77-211.323c0-78.745 19.042-147.098 77.823-190.605 39.683-29.372 88.787-46.74 141.948-46.74 71.118 0 134.975 31.083 178.728 80.406 37.398 42.158 46.467 97.642 46.467 158.431z"
+           fill="#ff5551"
+           id="path2" />
+      </g>
+    </g>
+    <path
+       d="m432.39 98.906c-4.643-6.41-9.596-12.58-14.838-18.489h-287.245c-9.253 0-15.823-9.102-12.814-17.852.067-.194.133-.387.201-.581 4.327-12.477-10.187-23.097-20.802-15.24-58.438 43.252-96.445 112.531-96.888 190.711-.744 131.287 105.61 239.169 236.895 240.21 61.815.49 118.242-22.511 160.909-60.606z"
+       fill="#e20a62"
+       id="path8" />
+    <g
+       id="g130">
+      <path
+         d="m171.393 328.406h288.899c11.199-27.662 17.381-57.892 17.381-89.57 0-48.705-14.592-93.996-39.624-131.765h-266.656z"
+         fill="#20b7a1"
+         id="path10" />
+      <g
+         id="g54">
+        <path
+           d="M 464.032,318.538 H 231.984 c -25.399,0 -45.989,-20.59 -45.989,-45.989 0.99171,-55.24806 -0.002,-107.99437 -0.002,-165.478 H 59.405 v 273.103 h 371.959 c 13.724,-18.663 24.795,-39.391 32.668,-61.636 z"
+           id="path12"
+           inkscape:connector-curvature="0"
+           style="fill:#269ab1"
+           sodipodi:nodetypes="cscccccc" />
+        <g
+           id="g20"
+           transform="translate(-0.50600953,29.854563)" />
+        <g
+           id="g24"
+           transform="translate(-50.600953,84.503592)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-weight:normal;font-size:49.75760269px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#269ab1;fill-opacity:1;stroke:none;stroke-width:0.93295509"
+             x="208.87833"
+             y="158.5504"
+             id="text948-7"><tspan
+               sodipodi:role="line"
+               id="tspan946-8"
+               x="208.87833"
+               y="158.5504"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.75760269px;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';fill:#269ab1;fill-opacity:1;stroke-width:0.93295509">WELCOME</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-weight:normal;font-size:49.75760269px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.93295509"
+             x="208.98193"
+             y="156.35695"
+             id="text948"><tspan
+               sodipodi:role="line"
+               id="tspan946"
+               x="208.98193"
+               y="156.35695"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.75760269px;font-family:'Segoe Print';-inkscape-font-specification:'Segoe Print';fill:#ffffff;stroke-width:0.93295509">WELCOME</tspan></text>
+        </g>
+      </g>
+      <g
+         fill="#2d56a1"
+         id="g60">
+        <path
+           d="m443.174 362.549h-287.742v25.79h269.651c6.571-8.175 12.626-16.782 18.091-25.79z"
+           id="path56" />
+        <path
+           d="m155.432 124.696h293.249c-4.885-8.963-10.337-17.57-16.291-25.79h-276.958z"
+           id="path58" />
+      </g>
+      <g
+         id="g66">
+        <g
+           id="g64">
+          <path
+             d="m158.824 375.771v-13.222h-82.744v-237.853h82.744v-13.222c0-6.942 5.627-12.569 12.569-12.569h-108.535c-6.941 0-12.569 5.627-12.569 12.569v264.296c0 6.942 5.627 12.569 12.569 12.569h108.535c-6.941.001-12.569-5.627-12.569-12.568z"
+             fill="#1a396b"
+             id="path62" />
+        </g>
+      </g>
+      <path
+         d="m175.203 388.34v26.313h225.269c8.847-8.137 17.073-16.935 24.611-26.313z"
+         fill="#2896ff"
+         id="path68" />
+      <g
+         id="g72">
+        <path
+           d="m186.33 388.34h-167.264v26.313h167.264z"
+           fill="#2d56a1"
+           id="path70" />
+      </g>
+      <g
+         id="g76">
+        <path
+           d="m73.882 341.014h80.036v47.325h-80.036z"
+           fill="#ffc305"
+           id="path74" />
+      </g>
+      <path
+         d="m81.631 372.425c0-2.437-1.127-4.609-2.887-6.027-1.573-1.267-2.385-3.257-2.385-5.276v-20.108h-51.174v47.325h51.174v-4.611c0-2.02.812-4.009 2.385-5.276 1.76-1.418 2.887-3.589 2.887-6.027z"
+         fill="#ff8500"
+         id="path78" />
+      <g
+         id="g82">
+        <circle
+           cx="44.57"
+           cy="354.494"
+           fill="#fa690f"
+           r="7.749"
+           id="circle80" />
+      </g>
+      <g
+         id="g86">
+        <circle
+           cx="49.411"
+           cy="378.235"
+           fill="#fa690f"
+           r="5.809"
+           id="circle84" />
+      </g>
+      <g
+         id="g90">
+        <circle
+           cx="94.37"
+           cy="357.424"
+           fill="#ff8500"
+           r="4.818"
+           id="circle88" />
+      </g>
+      <g
+         id="g94">
+        <circle
+           cx="110.784"
+           cy="374.079"
+           fill="#ff8500"
+           r="8.521"
+           id="circle92" />
+      </g>
+      <g
+         id="g98">
+        <circle
+           cx="133.521"
+           cy="358.641"
+           fill="#ff8500"
+           r="6.035"
+           id="circle96" />
+      </g>
+      <g
+         id="g128">
+        <path
+           d="m286.02 388.34h-93.899c-5.442 0-9.854-4.412-9.854-9.854 0-5.442 4.412-9.854 9.854-9.854h93.899c5.442 0 9.854 4.412 9.854 9.854-.001 5.442-4.412 9.854-9.854 9.854z"
+           fill="#fff"
+           id="path126" />
+      </g>
+    </g>
+  </g>
+</svg>

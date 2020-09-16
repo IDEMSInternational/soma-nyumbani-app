@@ -41,6 +41,11 @@
       </ion-list>
     </ion-content>
   </ion-menu>
-
-  <ion-router-outlet id="main"></ion-router-outlet>
+  <app-intro-tutorial
+    *ngIf="!userService.user.tutorialComplete && !skipTutorial"
+  ></app-intro-tutorial>
+  <ion-router-outlet
+    id="main"
+    *ngIf="userService.user.tutorialComplete || skipTutorial"
+  ></ion-router-outlet>
 </ion-app>
