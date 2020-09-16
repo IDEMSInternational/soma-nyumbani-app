@@ -35,7 +35,7 @@ jobs:
             node_modules/@capacitor-community
   deploy_firebase:
     runs-on: ubuntu-latest
-    needs: [build_dist]
+    needs: [build_web]
     continue-on-error: true
     name: Deploy to Firebase Staging
     steps:
@@ -51,7 +51,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
   build_deploy_android:
     runs-on: ubuntu-latest
-    needs: [build_dist]
+    needs: [build_web]
     continue-on-error: true
     name: Build and Deploy Android to Play Alpha Track
     steps:

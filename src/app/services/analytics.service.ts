@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from "@angular/router";
 import "@capacitor-community/firebase-analytics";
 import { FirebaseAnalyticsWeb } from "@capacitor-community/firebase-analytics";
 import { Plugins, Capacitor } from "@capacitor/core";
-import { AlertController, PopoverController } from "@ionic/angular";
+import { PopoverController } from "@ionic/angular";
 import { environment } from "src/environments/environment";
 import { AnalyticsConsentComponent } from "../components/analyticsConsent";
 const { FirebaseAnalytics } = Plugins;
