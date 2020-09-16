@@ -73,7 +73,7 @@ export class AnalyticsService {
         resolve(userConsented === "true" ? true : false);
       } else {
         const consented = await this.showConsentDialog();
-        // localStorage.setItem("analytics_user_consented", `${consented}`);
+        localStorage.setItem("analytics_user_consented", `${consented}`);
         resolve(consented);
       }
     });

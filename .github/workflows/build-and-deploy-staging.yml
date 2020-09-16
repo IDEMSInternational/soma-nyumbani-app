@@ -29,10 +29,10 @@ jobs:
           name: soma-nyumbani-app
           path: |
             ./
+            !src
             !node_modules
             node_modules/@capacitor
             node_modules/@capacitor-community
-            node_modules/@ionic-native
   deploy_firebase:
     runs-on: ubuntu-latest
     needs: [build_dist]
