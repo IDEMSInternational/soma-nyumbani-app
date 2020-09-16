@@ -17,6 +17,7 @@
   },
   "projects": {
     "production": "soma-nyumbani-app",
-    "staging": "soma-nyumbani-app-staging"
+    "staging": "soma-nyumbani-app-staging",
+    "default": "soma-nyumbani-app"
   }
 }
