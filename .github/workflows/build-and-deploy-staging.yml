@@ -20,9 +20,7 @@ jobs:
         run: yarn install
       - name: Configure Production Environment
         run: |
-          echo $FIREBASE_CONFIG_TS > src/environments/firebaseConfig.prod.ts
-        env:
-          FIREBASE_CONFIG_TS: ${{secrets.FIREBASE_CONFIG_TS}}
+          cp src/environments/firebaseConfig.ts src/environments/firebaseConfig.prod.ts
       - name: Build
         run: npm run app:build
       - name: Store Build Artifact
