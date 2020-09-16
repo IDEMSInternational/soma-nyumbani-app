@@ -1,5 +1,12 @@
 {
   "targets": {
+    "soma-nyumbani-app-staging": {
+      "hosting": {
+        "app": [
+          "soma-nyumbani-app-staging"
+        ]
+      }
+    },
     "soma-nyumbani-app": {
       "hosting": {
         "app": [
@@ -7,5 +14,9 @@
         ]
       }
     }
+  },
+  "projects": {
+    "production": "soma-nyumbani-app",
+    "staging": "soma-nyumbani-app-staging"
   }
 }
