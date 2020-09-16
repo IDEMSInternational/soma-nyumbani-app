@@ -45,7 +45,6 @@ export class DownloadsPage implements OnInit, OnDestroy {
     await this.db.removeAttachment("sessions", _id, attachmentId, _rev);
   }
   async openAttachment(attachment: IAttachmentDL) {
-    console.log("open attachment", attachment);
     attachment.docId = attachment.session._id;
     await this.fileService.openAttachment(attachment);
   }

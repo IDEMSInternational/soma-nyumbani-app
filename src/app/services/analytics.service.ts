@@ -88,7 +88,6 @@ export class AnalyticsService {
 
     await popover.present();
     const consented: boolean = (await popover.onDidDismiss()).data;
-    console.log("consented", consented);
     return consented;
   }
 

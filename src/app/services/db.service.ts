@@ -60,17 +60,17 @@ export class DbService {
     attachmentId: string
   ) {
     this.analytics.logEvent("download_attachment", { docId, attachmentId });
-    const attachment = await remoteDBs[endpoint].getAttachment(
+    const attachment = (await remoteDBs[endpoint].getAttachment(
       docId,
       attachmentId
-    );
+    )) as Blob;
     const { _rev } = await localDBs[endpoint].get(docId);
     await localDBs[endpoint].putAttachment(
       docId,
       attachmentId,
       _rev,
       attachment,
-      "text/plain"
+      attachment.type
     );
     await this.loadDB(endpoint);
   }
@@ -89,9 +89,9 @@ export class DbService {
     attachmentId: string,
     rev: string
   ) {
-    console.log("removing attachment", endpoint, docId, attachmentId, rev);
     await localDBs[endpoint].removeAttachment(docId, attachmentId, rev);
     await this.loadDB(endpoint);
+    // TODO - also remove temp file written (?)
   }
 
   /***************************************************************************

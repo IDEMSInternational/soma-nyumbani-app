@@ -17,6 +17,10 @@ export class FileService {
     private analytics: AnalyticsService
   ) {}
 
+  /**
+   * Given an attachment stub, retrieve the full doc and open using native file opener on
+   * device, or in browser on web
+   */
   async openAttachment(attachment: ICustomAttachment) {
     const { attachmentId, docId, content_type } = attachment;
     // log to analytics
