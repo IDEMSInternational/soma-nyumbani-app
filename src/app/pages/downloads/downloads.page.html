@@ -10,7 +10,7 @@
 <ion-content class="ion-padding">
   <ion-card *ngFor="let attachment of attachments">
     <div style="display: flex; align-items: center">
-      <ion-card-header style="flex: 1">
+      <ion-card-header style="flex: 1" (click)="openAttachment(attachment)">
         <ion-card-subtitle style="font-weight: bold; margin-bottom: 1em">
           {{ attachment.session.title }}
         </ion-card-subtitle>
