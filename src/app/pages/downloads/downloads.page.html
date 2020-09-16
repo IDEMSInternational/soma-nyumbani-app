@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Downloads</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card *ngFor="let attachment of attachments">
+    <div style="display: flex; align-items: center">
+      <ion-card-header style="flex: 1">
+        <ion-card-subtitle style="font-weight: bold; margin-bottom: 1em">
+          {{ attachment.session.title }}
+        </ion-card-subtitle>
+        <ion-card-subtitle style="font-weight: bold; margin-bottom: 1em">
+        </ion-card-subtitle>
+        <div>
+          <div>{{ attachment.attachmentId }}</div>
+          <div>{{ attachment.content_type }}</div>
+          <div>{{ attachment.length | fileSize }}</div>
+        </div>
+      </ion-card-header>
+      <ion-button fill="clear" (click)="removeAttachment(attachment)">
+        <ion-icon
+          name="trash-outline"
+          color="danger"
+          slot="icon-only"
+        ></ion-icon
+      ></ion-button>
+    </div>
+  </ion-card>
+  <ion-card *ngIf="attachments.length===0">
+    <ion-card-header>
+      <ion-card-subtitle
+        >No attachments have been downloaded
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

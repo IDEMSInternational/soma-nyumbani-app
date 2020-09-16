@@ -52,6 +52,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/firebaseConfig.ts",
+                  "with": "src/environments/firebaseConfig.prod.ts"
                 }
               ],
               "optimization": true,
@@ -179,6 +183,10 @@
               "devServerTarget": "app:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
@@ -189,10 +197,33 @@
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
-      "styleext": "scss"
+      "styleext": "scss",
+      "lintFix": true
     },
     "@ionic/angular-toolkit:page": {
-      "styleext": "scss"
+      "styleext": "scss",
+      "lintFix": true
+    },
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss",
+      "lintFix": true
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app",
+      "lintFix": true
+    },
+    "@schematics/angular:pipe": {
+      "lintFix": true
+    },
+    "@schematics/angular:class": {
+      "lintFix": true
+    },
+    "@schematics/angular:module": {
+      "lintFix": true
+    },
+    "@schematics/angular:service": {
+      "lintFix": true
     }
   }
 }

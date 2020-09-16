@@ -17,6 +17,11 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn install
+      - name: Configure Production Environment
+        run: |
+          echo $FIREBASE_CONFIG_TS > src/environments/firebaseConfig.prod.ts
+        env:
+          FIREBASE_CONFIG_TS: ${{secrets.FIREBASE_CONFIG_TS}}
       - name: Build
         run: npm run app:build
       - name: Set up JDK 1.8
@@ -24,10 +29,10 @@ jobs:
         with:
           java-version: 1.8
           # use data stored in secretes to populate google-services.json
-      # - name: Write Google Services Json
-      #   run: echo $GOOGLE_SERVICES_JSON > android/app/google-services.json
-      #   env:
-      #     GOOGLE_SERVICES_JSON: ${{secrets.GOOGLE_SERVICES_JSON}}
+      - name: Write Google Services Json
+        run: echo $GOOGLE_SERVICES_JSON > android/app/google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{secrets.GOOGLE_SERVICES_JSON}}
       - name: Generate Android Build
         # create release app bundle (aab) and app assemble (apk)
         run: cd android && chmod +x ./gradlew && ./gradlew clean :app:bundleRelease :app:assembleRelease
