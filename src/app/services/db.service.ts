@@ -4,6 +4,7 @@ import * as PouchDBDist from "pouchdb/dist/pouchdb";
 import * as PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
 import { ISessionMeta, IDayMeta, IDBDoc } from "src/types";
+import { AnalyticsService } from "./analytics.service";
 const PouchDB: typeof PouchDBDefault = PouchDBDist;
 
 const DB_USER = "somanyumbani_app";
@@ -42,7 +43,7 @@ export class DbService {
     [sessionId: string]: ISessionMeta & IDBDoc;
   }>({});
 
-  constructor() {
+  constructor(private analytics: AnalyticsService) {
     this.initDBService();
   }
   /***************************************************************************
@@ -58,6 +59,7 @@ export class DbService {
     docId: string,
     attachmentId: string
   ) {
+    this.analytics.logEvent("download_attachment", { docId, attachmentId });
     const attachment = await remoteDBs[endpoint].getAttachment(
       docId,
       attachmentId
