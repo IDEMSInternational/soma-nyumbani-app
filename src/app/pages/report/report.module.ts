@@ -4,10 +4,10 @@ import { FormsModule } from "@angular/forms";
 
 import { IonicModule } from "@ionic/angular";
 
-import { SessionPageRoutingModule } from "./session-routing.module";
+import { ReportPageRoutingModule } from "./report-routing.module";
 
-import { SessionPage } from "./session.page";
-import { SessionAttachmentsComponent } from "./components/session-attachments";
+import { ReportPage } from "./report.page";
+import { AppComponentsModule } from "src/app/components";
 import { AppPipesModule } from "src/app/pipes";
 
 @NgModule({
@@ -15,9 +15,10 @@ import { AppPipesModule } from "src/app/pipes";
     CommonModule,
     FormsModule,
     IonicModule,
-    SessionPageRoutingModule,
+    ReportPageRoutingModule,
+    AppComponentsModule,
     AppPipesModule,
   ],
-  declarations: [SessionPage, SessionAttachmentsComponent],
+  declarations: [ReportPage],
 })
-export class SessionPageModule {}
+export class ReportPageModule {}

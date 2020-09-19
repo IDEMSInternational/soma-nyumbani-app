@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>New Session</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Session Information</h2>
+
+  <!-- <div>Teaching Date</div> -->
+  <!-- <div>Cohort</div>  -->
+  <h2>Session Guides</h2>
+  <p>Select a guide to use for the session</p>
+  <ion-button
+    fill="outline"
+    color="secondary"
+    style="height: 6em; background: white"
+    (click)="openSessionSelect()"
+    *ngIf="!report.selectedSession"
+  >
+    <ion-icon slot="start" name="add"></ion-icon>
+    <span>Pick session</span>
+  </ion-button>
+  <div *ngIf="report.selectedSession">
+    <div *ngIf="(db.sessionsById$ | async)[report.selectedSession] as session">
+      <ion-card>
+        <ion-card-header
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <ion-card-title>{{session.title}}</ion-card-title>
+          <ion-button (click)="openSessionSelect()" fill="clear">
+            <span>Change</span>
+            <ion-icon name="repeat-outline" slot="end"></ion-icon>
+          </ion-button>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-card-subtitle style="margin-bottom: 1em"
+            >Resources</ion-card-subtitle
+          >
+          <ion-list>
+            <ion-item
+              *ngFor="let attachment of session.attachments | objectToArray:'attachmentId'"
+            >
+              <app-session-attachment
+                [attachment]="attachment"
+                [session]="session"
+              ></app-session-attachment>
+            </ion-item>
+          </ion-list>
+          <div></div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <h2>Observations</h2>
+  <button>Teach Session (sticky)</button>
+
+  <!-- Active Session Template -->
+  <!-- <div *ngIf="(db.days$ | async)[dayId-1] as day">
+    <div *ngIf="day.sessions[sessionNumber-1] as sessionId">
+      <div *ngIf="(db.sessionsById$ | async)[sessionId] as session">
+        <h2>Session {{sessionNumber}} - {{session.title}}</h2>
+        <h4>Attachments</h4>
+        <app-session-attachment [session]="session"></app-session-attachment>
+      </div>
+    </div>
+    <div class="sessions-container"></div>
+  </div> -->
+</ion-content>
