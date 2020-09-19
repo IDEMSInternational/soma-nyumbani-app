@@ -36,3 +36,12 @@ ion-content {
   margin-right: -50% !important;
   transform: translate(-50%);
 }
+ion-item.bg-white {
+  --background: white;
+}
+ion-item.hover-secondary {
+  --background-focused: var(--ion-color-secondary);
+  --background-hover: var(--ion-color-secondary);
+  --background-hover-opacity: 0.1;
+  --background-focused-opacity: 0.1;
+}
