@@ -1,17 +1,5 @@
 export { IDBEndpoint } from "../app/services/db.service";
 
-export interface IDayMeta {
-  title: string;
-  sessions: string[];
-}
-export interface ISessionMeta {
-  title: string;
-  description: string;
-  tags: string[];
-  // custom attachments entry to keep non-binary attachment stub
-  attachments?: { [filename: string]: IDBAttachmentStub };
-}
-
 /**
  * If a document contains attachments with have not been included in sync,
  * A stubbed field is included
