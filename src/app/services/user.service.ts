@@ -3,7 +3,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { auth } from "firebase/app";
 import { BehaviorSubject } from "rxjs";
-import { IUser, DEFAULT_USER } from "src/types";
+import { IUser, DEFAULT_USER } from "src/models";
 
 @Injectable({
   providedIn: "root",

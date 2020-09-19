@@ -6,7 +6,7 @@ import {
   IDBAttachmentStub,
   IDBDoc,
   ISessionMeta,
-} from "src/types";
+} from "src/models";
 
 @Component({
   selector: "app-session-attachment",
