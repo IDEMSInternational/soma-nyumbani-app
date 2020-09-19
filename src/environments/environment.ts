@@ -7,6 +7,7 @@ import FIREBASE_CONFIG from "./firebaseConfig";
 
 export const environment = {
   production: false,
+  staging: true,
   APP_VERSION: version,
   FIREBASE_CONFIG,
 };

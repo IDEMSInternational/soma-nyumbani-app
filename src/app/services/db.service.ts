@@ -5,18 +5,20 @@ import * as PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
 import { ISessionMeta, IDayMeta, IDBDoc } from "src/types";
 import { AnalyticsService } from "./analytics.service";
+import { environment } from "src/environments/environment";
 const PouchDB: typeof PouchDBDefault = PouchDBDist;
 
+const DB_SUFFIX = environment.staging ? "_staging" : "";
 const DB_USER = "somanyumbani_app";
 const DB_PASS = "somanyumbani_app";
 const DB_DOMAIN = "db.somanyumbani.com";
 const localDBs = {
-  sessions: new PouchDB("somanyumbani_sessions"),
-  days: new PouchDB("somanyumbani_days"),
+  sessions: new PouchDB(`somanyumbani_sessions${DB_SUFFIX}`),
+  days: new PouchDB(`somanyumbani_days`),
 };
 const remoteDBs = {
   sessions: new PouchDB(
-    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_sessions`
+    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_sessions${DB_SUFFIX}`
   ),
   days: new PouchDB(
     `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_days`

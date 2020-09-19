@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "app:build": "npm run build -- --prod && npx cap sync",
+    "app:build:staging": "ng build --configuration=\"production,staging\" && npx cap sync",
+    "app:build:production": "ng build --configuration=production && npx cap sync",
     "postinstall": "ngcc && npx jetify",
     "version": "ts-node --project tsconfig.scripts.json scripts/version.ts",
     "scripts:populateDB": "ts-node --project tsconfig.scripts.json scripts/populateDB.ts"
@@ -34,9 +35,11 @@
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-file-opener2": "^3.0.4",
     "firebase": "^7.20.0",
+    "ng2-pdf-viewer": "^6.3.2",
     "pouchdb": "^7.2.2",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.1",
+    "uuid": "^8.3.0",
     "zone.js": "~0.11.1"
   },
   "devDependencies": {
@@ -54,6 +57,7 @@
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "^14.6.4",
     "@types/pouchdb": "^6.4.0",
+    "@types/uuid": "^8.3.0",
     "axios": "^0.20.0",
     "codelyzer": "^6.0.0",
     "firebase-tools": "^8.0.0",

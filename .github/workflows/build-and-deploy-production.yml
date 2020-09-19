@@ -23,7 +23,7 @@ jobs:
         env:
           FIREBASE_CONFIG_TS: ${{secrets.FIREBASE_CONFIG_TS}}
       - name: Build
-        run: npm run app:build
+        run: npm run app:build:production
       - name: Store Build Artifact
         uses: actions/upload-artifact@v2
         with:
