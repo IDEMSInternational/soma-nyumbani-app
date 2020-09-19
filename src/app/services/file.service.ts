@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Plugins, FilesystemDirectory, Capacitor } from "@capacitor/core";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
-import { ICustomAttachment } from "src/types";
+import { ModalController } from "@ionic/angular";
+import { ICustomAttachment } from "src/models";
+import { PdfViewerModalComponent } from "../components/pdf-viewer-modal";
 import { AnalyticsService } from "./analytics.service";
 import { DbService } from "./db.service";
 
@@ -14,8 +16,17 @@ export class FileService {
   constructor(
     private db: DbService,
     private fileOpener: FileOpener,
-    private analytics: AnalyticsService
+    private analytics: AnalyticsService,
+    private modalCtrl: ModalController
   ) {}
+
+  private async openPdf(file: Blob) {
+    const modal = await this.modalCtrl.create({
+      component: PdfViewerModalComponent,
+    });
+    modal.componentProps = { pdfSrc: file };
+    await modal.present();
+  }
 
   /**
    * Given an attachment stub, retrieve the full doc and open using native file opener on
@@ -29,6 +40,11 @@ export class FileService {
     const data = await this.db.getAttachment("sessions", docId, attachmentId);
     const file = new Blob([data], { type: content_type });
     const fileURL = URL.createObjectURL(file);
+    console.log("open file", file, data);
+    if (file.type === "application/pdf") {
+      console.log("opening pdf in modal");
+      return this.openPdf(file);
+    }
     // Open - Native
     // Write data to temp file and open from there
     // TODO - possibly check if already exists (and matching md5) and just open
@@ -54,15 +70,6 @@ export class FileService {
           });
         } catch (error) {
           console.error(error);
-          // workaround for inaccessible file urls
-          // https://github.com/Smile-SA/cordova-plugin-fileopener/issues/15
-          // https://github.com/pwlin/cordova-plugin-file-opener2/issues/125
-          // https://github.com/ionic-team/capacitor/issues/1040
-          // const entry = await this.file.resolveLocalFilesystemUrl(uri);
-          // console.log("entry", entry);
-          // this.fileOpener.open(entry.toURL(), content_type).catch((err) => {
-          //   console.error(err);
-          // });
         }
       };
       // Open - Web

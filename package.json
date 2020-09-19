@@ -35,7 +35,7 @@
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-file-opener2": "^3.0.4",
     "firebase": "^7.20.0",
-    "ng2-pdf-viewer": "^6.3.2",
+    "ng2-pdfjs-viewer": "^5.0.7",
     "pouchdb": "^7.2.2",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.1",
