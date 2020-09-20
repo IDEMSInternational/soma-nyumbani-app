@@ -8,13 +8,51 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h2>Next</h2>
-  <ion-card button class="nav-card" routerLink="/report">
-    <div class="nav-card-content">
-      <img src="assets/images/teach.svg" class="nav-card-image" />
-      <div class="nav-card-title">Teach a new session</div>
+  <div *ngIf="(userService.user$ | async).activeDay as activeDay">
+    <div style="display: flex; align-items: center">
+      <h2 style="flex: 1; margin: 8px 0">Today's Sessions</h2>
+      <div style="display: flex; align-items: center">
+        <ion-button
+          fill="clear"
+          color="secondary"
+          [disabled]="activeDay===1"
+          (click)="setActiveDay(activeDay-1)"
+          ><ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon
+        ></ion-button>
+        <div style="color: var(--ion-color-secondary)">Day {{activeDay}}</div>
+        <ion-button
+          fill="clear"
+          color="secondary"
+          [disabled]="activeDay===(db.sessionsByDay$ | async).length"
+          (click)="setActiveDay(activeDay+1)"
+          ><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon
+        ></ion-button>
+      </div>
     </div>
-  </ion-card>
-  <h2>Previous</h2>
-  <p>Sessions you have taught will appear here</p>
+    <div *ngIf="(db.sessionsByDay$ | async)[activeDay-1] as dailySessions">
+      <ion-card
+        button
+        class="nav-card"
+        *ngFor="let session of dailySessions, index as i"
+        (click)="goToSession(session)"
+      >
+        <ion-card-header>
+          <ion-card-title color="secondary">{{session.title}}</ion-card-title>
+          <ion-card-subtitle>Session {{i+1}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <div
+            class="session-description"
+            [innerHTML]="session.description"
+          ></div>
+          <div style="margin-top: 1em">
+            <app-session-area-tag
+              *ngFor="let area of session.areas_involved | objectToArray"
+              [tag]="area.key"
+            ></app-session-area-tag>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
 </ion-content>

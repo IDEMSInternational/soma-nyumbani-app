@@ -16,3 +16,17 @@
   font-weight: 500;
   line-height: 1.2;
 }
+.session-description {
+  height: 5.8em;
+  line-height: 1.5em;
+  overflow: hidden;
+}
+ion-card-header {
+  padding: 0;
+}
+ion-card-content {
+  padding: 0;
+}
+ion-card-subtitle {
+  text-decoration: underline;
+}
