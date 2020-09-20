@@ -16,30 +16,41 @@ import {
         display: block;
         width: 100%;
       }
+      .attachment-title {
+        font-size: small;
+        overflow: hidden;
+        word-break: break-all;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .attachment-meta {
+        font-size: small;
+      }
     `,
   ],
   template: `
     <div (click)="handleAttachmentClick()">
-      <div style="font-weight:bold">
+      <!-- NOTE - note required currently -->
+      <!-- <div class="attachment-title">
         {{ _attachment.attachmentId }}
-      </div>
+      </div> -->
       <div style="display:flex; align-items:center; cursor:pointer">
         <div style="flex:1">
-          <div style="font-size:small">
+          <div class="attachment-meta">
             <div>{{ _attachment.content_type }}</div>
             <div>{{ _attachment.length | fileSize }}</div>
           </div>
         </div>
         <ion-button
           fill="clear"
-          [color]="_attachment.isDownloaded ? 'secondary' : 'primary'"
+          [color]="isDownloaded ? 'secondary' : 'primary'"
           style="height:3em"
         >
           <span *ngIf="!isDownloading">{{
-            _attachment.isDownloaded ? "Open" : "Download"
+            isDownloaded ? "Open" : "Download"
           }}</span>
           <ion-icon
-            [name]="_attachment.isDownloaded ? 'open-outline' : 'download'"
+            [name]="isDownloaded ? 'open-outline' : 'download'"
             *ngIf="!isDownloading"
             style="font-size:2em;"
             slot="end"
@@ -58,6 +69,7 @@ import {
 })
 export class SessionAttachmentComponent implements OnInit {
   isDownloading = false;
+  isDownloaded = false;
   _attachment: ICustomAttachment;
   @Input() attachment: IAttachmentInput;
   @Input() session: ISessionMeta & IDBDoc;
@@ -71,15 +83,15 @@ export class SessionAttachmentComponent implements OnInit {
     if (this.isDownloading) {
       return;
     }
-    if (this._attachment.isDownloaded) {
+    if (this.isDownloaded) {
       this.fileService.openAttachment(this._attachment);
     } else {
-      this.downloadAttachment(this._attachment);
+      this.downloadAttachment();
     }
   }
 
-  private async downloadAttachment(attachment: ICustomAttachment) {
-    const { attachmentId } = attachment;
+  public async downloadAttachment() {
+    const { attachmentId } = this._attachment;
     this.isDownloading = true;
     try {
       await this.db.downloadAttachment(
@@ -87,10 +99,10 @@ export class SessionAttachmentComponent implements OnInit {
         this.session._id,
         attachmentId
       );
-      this.isDownloading[attachmentId] = false;
-      this._attachment.isDownloaded = true;
+      this.isDownloading = false;
+      this.isDownloaded = true;
     } catch (error) {
-      this.isDownloading[attachmentId] = false;
+      this.isDownloading = false;
       // TODO - notifiy error message
     }
   }
@@ -98,16 +110,14 @@ export class SessionAttachmentComponent implements OnInit {
     session: ISessionMeta & IDBDoc,
     attachment: IAttachmentInput
   ) {
-    console.log("prepare attachment", session, attachment);
     const { attachmentId } = attachment;
     const downloads = session._attachments || {};
-    // TODO - check isdownloaded
+    console.log("downloads", downloads);
     this._attachment = {
       ...attachment,
       docId: session._id,
-      isDownloaded: downloads[attachmentId] ? true : false,
     };
-    console.log("attachment", this._attachment);
+    this.isDownloaded = downloads[attachmentId] ? true : false;
   }
 }
 /**
