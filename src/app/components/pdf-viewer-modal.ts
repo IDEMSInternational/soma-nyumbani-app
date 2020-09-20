@@ -22,7 +22,9 @@ import { ModalController } from "@ionic/angular";
         <ion-icon name="clipboard-outline"></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="top">
-        <ion-fab-button><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
+        <ion-fab-button
+          ><ion-icon name="document-text-outline"></ion-icon
+        ></ion-fab-button>
       </ion-fab-list>
     </ion-fab>
   `,

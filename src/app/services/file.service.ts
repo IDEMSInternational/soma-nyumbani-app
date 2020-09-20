@@ -20,19 +20,12 @@ export class FileService {
     private modalCtrl: ModalController
   ) {}
 
-  private async openPdf(file: Blob) {
-    const modal = await this.modalCtrl.create({
-      component: PdfViewerModalComponent,
-    });
-    modal.componentProps = { pdfSrc: file };
-    await modal.present();
-  }
-
   /**
    * Given an attachment stub, retrieve the full doc and open using native file opener on
    * device, or in browser on web
+   * @Input props - additional props to pass to display compoennt
    */
-  async openAttachment(attachment: ICustomAttachment) {
+  async openAttachment(attachment: ICustomAttachment, props?: any) {
     const { attachmentId, docId, content_type } = attachment;
     // log to analytics
     this.analytics.logEvent("open_attachment", { attachmentId });
@@ -43,7 +36,7 @@ export class FileService {
     console.log("open file", file, data);
     if (file.type === "application/pdf") {
       console.log("opening pdf in modal");
-      return this.openPdf(file);
+      return this.openPdf(file, props);
     }
     // Open - Native
     // Write data to temp file and open from there
@@ -76,5 +69,18 @@ export class FileService {
     } else {
       window.open(fileURL);
     }
+  }
+
+  /**
+   * Handle PDF Opening in embeded pdf viewer (instead of native file opener)
+   * @param file - binary data representing pdf file
+   * @param props - additional props to pass to PdfViewerModalComponent
+   */
+  private async openPdf(file: Blob, props: any = {}) {
+    const modal = await this.modalCtrl.create({
+      component: PdfViewerModalComponent,
+    });
+    modal.componentProps = { pdfSrc: file, ...props };
+    await modal.present();
   }
 }
