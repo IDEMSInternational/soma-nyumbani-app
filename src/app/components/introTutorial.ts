@@ -43,11 +43,6 @@ import { UserService } from "../services/user.service";
       b {
         font-weight: 500;
       }
-      .link {
-        text-decoration: underline;
-        color: var(--ion-color-primary);
-        cursor: pointer;
-      }
 
       p {
         padding: 0 40px;

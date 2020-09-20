@@ -18,7 +18,6 @@ export interface IDBAttachmentStub {
 export interface ICustomAttachment extends IDBAttachmentStub {
   attachmentId: string;
   docId: string;
-  isDownloaded?: boolean;
 }
 
 /**
