@@ -9,12 +9,14 @@ import { SessionsListComponent } from "./sessions-list";
 import { SessionsListModalComponent } from "./sessions-list-modal";
 import { AppPipesModule } from "../pipes";
 import { PdfViewerModalComponent } from "./pdf-viewer-modal";
+import { SessionAreaTagComponent } from "./session-area-tag";
 
 const AppComponents = [
   IntroTutorialComponent,
   SessionAttachmentComponent,
   SessionsListComponent,
   SessionsListModalComponent,
+  SessionAreaTagComponent,
   PdfViewerModalComponent,
 ];
 

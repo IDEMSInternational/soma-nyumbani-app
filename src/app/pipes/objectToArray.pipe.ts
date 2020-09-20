@@ -15,7 +15,6 @@ import { Pipe, PipeTransform } from "@angular/core";
  */
 export class ObjectToArrayPipe implements PipeTransform {
   transform(obj: { [key: string]: any }, keyAs: string = "key"): any {
-    console.log("object to array", obj, keyAs);
     return obj
       ? Object.entries(obj).map(([key, value]) => ({ ...value, [keyAs]: key }))
       : obj;
