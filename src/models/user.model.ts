@@ -5,27 +5,35 @@ import { ISessionReport } from "./report.model";
  */
 export interface IUserDocBase {
   _created: string;
-  _last_modified: string;
-  _last_sync?: string;
+  _lastModified: string;
+  _lastSync?: string;
 }
 
-export interface IUser extends IUserDocBase {
+/**
+ * The main user data models consists of base metadata, user metadata (e.g. user id)
+ * and nested subcollections for user-generated documents (e.g. session reports)
+ */
+export type IUser = IUserDocBase & IUserMeta & IUserSubcollections;
+
+export interface IUserMeta extends IUserDocBase {
   activeDay: number;
   role?: "teacher" | "facilitator" | "student";
   uid?: string; // populated by auth on registration
   analyticsConsent?: boolean;
   tutorialComplete?: boolean;
-  sessionReports: ISessionReport[];
+}
+export interface IUserSubcollections {
+  sessionReports: { [id: string]: ISessionReport };
 }
 
 export const DEFAULT_USER: IUser = {
   _created: new Date().toISOString(),
-  _last_modified: new Date().toISOString(),
-  sessionReports: [],
+  _lastModified: new Date().toISOString(),
+  sessionReports: {},
   activeDay: 1,
 };
 
 export const USER_DOC_BASE = (): IUserDocBase => {
   const d = new Date().toISOString();
-  return { _created: d, _last_modified: d };
+  return { _created: d, _lastModified: d };
 };
