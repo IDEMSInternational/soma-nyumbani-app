@@ -132,6 +132,7 @@ export class DbService {
       .sort((a, b) => a.day_number - b.day_number);
   }
   private _sortSessionsByDay(sessions: (ISessionMeta & IDBDoc)[]) {
+    sessions = this._sortSessions(sessions);
     const days = [[]];
     sessions.forEach((s) => {
       const dayIndex = s.day_number - 1;
