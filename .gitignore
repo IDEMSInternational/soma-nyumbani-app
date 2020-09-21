@@ -53,3 +53,5 @@ android/.idea
 android/app/google-services.json
 src/environments/firebaseConfig.prod.ts
 .firebase/hosting.d3d3.cache
+# Ignore any saved keystores
+**/*.jks
