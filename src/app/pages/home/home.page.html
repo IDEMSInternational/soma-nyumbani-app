@@ -37,7 +37,18 @@
         (click)="goToSession(session)"
       >
         <ion-card-header>
-          <ion-card-title color="secondary">{{session.title}}</ion-card-title>
+          <div style="display: flex; align-items: center">
+            <ion-card-title color="secondary" style="flex: 1"
+              >{{session.title}}</ion-card-title
+            >
+            <!-- messy way to show if a report exists for a given session - TODO - tidy -->
+            <ion-icon
+              *ngIf="userService.user.sessionReports['day-'+session.day_number+'_'+'session-'+session.session_number]"
+              name="checkmark-circle-outline"
+              style="font-size: 18px"
+            ></ion-icon>
+          </div>
+
           <ion-card-subtitle
             >Session {{session.session_number}}</ion-card-subtitle
           >
