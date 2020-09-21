@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { ErrorHandler, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
@@ -7,6 +7,7 @@ import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import * as Sentry from "@sentry/angular";
 
 import { environment } from "src/environments/environment";
 import { AppComponent } from "./app.component";
@@ -27,6 +28,12 @@ import { AppComponentsModule } from "./components";
   providers: [
     FileOpener,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: false,
+      }),
+    },
   ],
   bootstrap: [AppComponent],
 })

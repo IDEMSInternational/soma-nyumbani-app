@@ -23,7 +23,7 @@ jobs:
         env:
           FIREBASE_CONFIG_TS: ${{secrets.FIREBASE_CONFIG_TS}}
       - name: Build
-        run: npm run app:build:production
+        run: npm run app:build:production && npm run app:sync
       - name: Store Build Artifact
         uses: actions/upload-artifact@v2
         with:
@@ -64,8 +64,6 @@ jobs:
         with:
           java-version: 1.8
           # use data stored in secretes to populate google-services.json
-      - name: Sync Build Dependencies
-        run: npm run app:sync
       - name: Write Google Services Json
         run: echo $GOOGLE_SERVICES_JSON > android/app/google-services.json
         env:
