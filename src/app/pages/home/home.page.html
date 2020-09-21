@@ -4,6 +4,14 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Soma Nyumbani</ion-title>
+    <ion-buttons slot="end" *ngIf="(userService.user$ | async) as user">
+      <ion-button *ngIf="!user.uid" (click)="userService.signIn()"
+        >Sign In</ion-button
+      >
+      <ion-button *ngIf="user.uid" (click)="userService.signOutUser()"
+        >Sign Out</ion-button
+      >
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

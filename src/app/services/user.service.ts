@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { auth } from "firebase/app";
+import { cfaSignIn, cfaSignOut } from "capacitor-firebase-auth";
+
 import { BehaviorSubject } from "rxjs";
 import {
   IUser,
@@ -13,6 +14,11 @@ import {
 @Injectable({
   providedIn: "root",
 })
+/**
+ * The user service handles login and user document sync
+ * Native code requirements for auth:
+ * https://www.npmjs.com/package/capacitor-firebase-auth
+ */
 export class UserService {
   user$ = new BehaviorSubject<IUser>(DEFAULT_USER);
   constructor(
@@ -34,8 +40,12 @@ export class UserService {
   }
 
   signIn() {
-    const provider = new auth.GoogleAuthProvider();
-    this.afAuth.signInWithPopup(provider);
+    // Use native capacitor firebase auth sign in with google provider
+    // auth state changes still handled by generic listener
+    cfaSignIn("google.com").subscribe(
+      (user) => console.log("user", user),
+      (err) => console.error(err)
+    );
   }
 
   /**
@@ -44,7 +54,6 @@ export class UserService {
    * @param sync - Whether to sync with online server immediately
    */
   updateUser(update: Partial<IUserMeta>, sync = true) {
-    console.log("update user", update);
     const user = { ...this.user, ...update };
     this.saveUser(user, sync);
   }
@@ -75,12 +84,10 @@ export class UserService {
   }
 
   /**
-   *  Remove all locally stored data and sign out user from device
+   * Sign user out, but retain locally stored data
    */
   signOutUser() {
-    localStorage.removeItem("user");
-    this.user$.next(DEFAULT_USER);
-    this.afAuth.signOut();
+    cfaSignOut().subscribe((e) => console.log("signed out", e));
   }
 
   /**
@@ -97,19 +104,25 @@ export class UserService {
   private _subscribeToAuthUpdates() {
     this.afAuth.authState.subscribe(async (user) => {
       if (user) {
-        console.log("user signed in, retrieving profile", user);
-        const { uid } = user;
-        const ref = this.firestore.collection("users").doc<IUser>(uid);
+        console.log("user signed in");
+        const { uid, displayName } = user;
+        this.updateUser({ uid, displayName }, false);
+        // const ref = this.firestore.collection("users").doc<IUser>(uid);
         // TODO - subscribe to user updates (currently just 1-time fetch)
-        const doc = await ref.get().toPromise();
-        if (doc.exists) {
-          // TODO - sync user from server - make sure not to overwrite existing data
-          // e.g. sync'd some reports on one device, and then used another and
-          // want to re-sync
-          // this.updateUser(doc.data() as IUser, false);
-        } else {
-          this.updateUser({ uid });
-        }
+        // const doc = await ref.get().toPromise();
+        // if (doc.exists) {
+        //   // TODO - sync user from server - make sure not to overwrite existing data
+        //   // e.g. sync'd some reports on one device, and then used another and
+        //   // want to re-sync
+        //   // this.updateUser(doc.data() as IUser, false);
+        // } else {
+        //   this.updateUser({ uid, displayName });
+        // }
+      } else {
+        console.log("user not signed in");
+        const uid = null;
+        const displayName = null;
+        this.updateUser({ uid, displayName }, false);
       }
     });
   }

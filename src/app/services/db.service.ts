@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 // Hacky import to fix lack of types when importing from dist and broken default import
-import * as PouchDBDist from "pouchdb/dist/pouchdb";
-import * as PouchDBDefault from "pouchdb";
+import PouchDBDist from "pouchdb/dist/pouchdb";
+import PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
 import { ISessionMeta, IDBDoc } from "src/models";
 import { AnalyticsService } from "./analytics.service";
