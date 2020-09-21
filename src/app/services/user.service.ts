@@ -18,6 +18,8 @@ import {
  * The user service handles login and user document sync
  * Native code requirements for auth:
  * https://www.npmjs.com/package/capacitor-firebase-auth
+ * Also if signing via google play, ensure correct sha:1
+ * added from google play store to firebase
  */
 export class UserService {
   user$ = new BehaviorSubject<IUser>(DEFAULT_USER);
@@ -42,10 +44,7 @@ export class UserService {
   signIn() {
     // Use native capacitor firebase auth sign in with google provider
     // auth state changes still handled by generic listener
-    cfaSignIn("google.com").subscribe(
-      (user) => console.log("user", user),
-      (err) => console.error(err)
-    );
+    cfaSignIn("google.com").subscribe((user) => console.log("user", user));
   }
 
   /**
