@@ -127,9 +127,11 @@ export class DbService {
   }
 
   private _sortSessions(sessions: (ISessionMeta & IDBDoc)[]) {
-    return sessions
-      .sort((a, b) => a.session_number - b.session_number)
-      .sort((a, b) => a.day_number - b.day_number);
+    return sessions.sort((a, b) =>
+      a.day_number === b.day_number
+        ? a.session_number - b.session_number
+        : a.day_number - b.day_number
+    );
   }
   private _sortSessionsByDay(sessions: (ISessionMeta & IDBDoc)[]) {
     sessions = this._sortSessions(sessions);
@@ -141,6 +143,7 @@ export class DbService {
       }
       days[dayIndex].push(s);
     });
+    console.log("days", days);
     return days;
   }
 
