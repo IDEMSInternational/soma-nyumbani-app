@@ -19,6 +19,7 @@ export interface IUserMeta extends IUserDocBase {
   activeDay: number;
   role?: "teacher" | "facilitator" | "student";
   uid?: string; // populated by auth on registration
+  displayName?: string;
   analyticsConsent?: boolean;
   tutorialComplete?: boolean;
 }
