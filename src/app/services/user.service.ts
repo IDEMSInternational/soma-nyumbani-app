@@ -10,6 +10,7 @@ import {
   IUserMeta,
   IUserSubcollections,
 } from "src/models";
+import { AnalyticsService } from "./analytics.service";
 
 @Injectable({
   providedIn: "root",
@@ -25,7 +26,8 @@ export class UserService {
   user$ = new BehaviorSubject<IUser>(DEFAULT_USER);
   constructor(
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private analytics: AnalyticsService
   ) {
     const user = localStorage.getItem("user");
     if (user) {
@@ -106,6 +108,7 @@ export class UserService {
         console.log("user signed in");
         const { uid, displayName } = user;
         this.updateUser({ uid, displayName }, false);
+        this.analytics.setUserID(uid);
         // const ref = this.firestore.collection("users").doc<IUser>(uid);
         // TODO - subscribe to user updates (currently just 1-time fetch)
         // const doc = await ref.get().toPromise();
