@@ -1,6 +1,6 @@
 import * as fs from "fs-extra";
 import axios from "axios";
-import { IDBEndpoint } from "../src/types";
+import { IDBEndpoint } from "src/models";
 
 const DB_URL = "https://somanyumbani_app:somanyumbani_app@db.somanyumbani.com";
 

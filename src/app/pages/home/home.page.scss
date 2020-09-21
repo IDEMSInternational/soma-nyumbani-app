@@ -1,0 +1,32 @@
+.nav-card-image {
+  max-height: 120px;
+  height: 20vh;
+  margin-right: 1em;
+}
+.nav-card {
+  padding: 1em;
+}
+.nav-card-content {
+  display: flex;
+  align-items: center;
+}
+.nav-card-title {
+  color: var(--ion-color-step-850, #262626);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.session-description {
+  height: 5.8em;
+  line-height: 1.5em;
+  overflow: hidden;
+}
+ion-card-header {
+  padding: 0;
+}
+ion-card-content {
+  padding: 0;
+}
+ion-card-subtitle {
+  text-decoration: underline;
+}

@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title
+      >Day {{report.day_number}} Session {{report.session_number}}</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- General Information -->
+  <section>
+    <h2>Session Information</h2>
+    <ion-item>
+      <ion-label position="floating">Session Date</ion-label>
+      <ion-input
+        type="date"
+        [value]="report.sessionDate"
+        color="secondary"
+        style="max-width: 170px"
+        (ionBlur)="updateReport('sessionDate',$event.target.value)"
+      ></ion-input>
+    </ion-item>
+  </section>
+  <!-- Session Guide -->
+  <section>
+    <h2>Session Guide</h2>
+    <ion-button
+      fill="clear"
+      color="secondary"
+      class="session-select-button"
+      (click)="openSessionSelect()"
+      *ngIf="!report.selectedSession"
+    >
+      <ion-icon slot="start" name="add"></ion-icon>
+      <span>Pick session</span>
+    </ion-button>
+    <div *ngIf="report.selectedSession">
+      <div
+        *ngIf="(db.sessionsById$ | async)[report.selectedSession] as session"
+      >
+        <ion-card>
+          <ion-card-header
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              background-color: var(--ion-color-secondary);
+            "
+          >
+            <ion-card-title style="color: white"
+              >{{session.title}}</ion-card-title
+            >
+            <ion-button
+              (click)="openSessionSelect()"
+              fill="outline"
+              color="light"
+            >
+              <span>Change</span>
+              <ion-icon name="repeat-outline" slot="end"></ion-icon>
+            </ion-button>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-card-subtitle style="margin-top: 1em"
+              >Session Guide</ion-card-subtitle
+            >
+            <ion-list>
+              <ion-item
+                *ngFor="let attachment of session.attachments | objectToArray:'attachmentId'; index as i"
+              >
+                <app-session-attachment
+                  [attachment]="attachment"
+                  [session]="session"
+                  [id]="'attachment_'+i"
+                  #attachment
+                ></app-session-attachment>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </section>
+  <!-- Observations -->
+  <!-- <section>
+    <h2>Observations</h2>
+    <div *ngFor="let observation of report.observations">
+      observation: {{observation}}
+    </div>
+    <p *ngIf="report.observations.length===0">
+      As you teach the session you can record observations which will be
+      reported here
+    </p>
+  </section> -->
+  <section>
+    <h2>Reflection</h2>
+    <p>After you have taught the session add your reflections here</p>
+    <div
+      *ngFor="let reflection of report.reflections; index as i"
+      class="reflection-container"
+    >
+      <div class="reflection-prompt">{{reflection.prompt}}</div>
+      <ion-textarea
+        color="secondary"
+        placeholder="..."
+        autoGrow
+        rows="2"
+        [value]="reflection.response"
+        (ionBlur)="report.reflections[i].response=$event.target.value ;updateReport('reflections', report.reflections)"
+      ></ion-textarea>
+      <!-- todo, add bindings and save functionality -->
+    </div>
+  </section>
+  <section>
+    <div style="display: flex; align-items: center">
+      <ion-icon
+        style="font-size: 1.5em; margin-right: 8px"
+        name="information-circle"
+      ></ion-icon>
+      <span>Your report will be saved automatically</span>
+      <!-- , and available in
+      <span class="link" routerLink="/reports">reports</span> -->
+    </div>
+  </section>
+  <!-- bottom padding -->
+  <div style="height: 5em"></div>
+  <ion-button
+    class="footer-button"
+    expand="full"
+    *ngIf="sessionGuideStatus !== 'downloaded'"
+    (click)="downloadSessionGuide()"
+    [disabled]="sessionGuideStatus==='downloading'"
+  >
+    <ng-template [ngIf]="sessionGuideStatus==='downloading'">
+      <span>Downloading Session Guide</span>
+      <ion-spinner slot="end"></ion-spinner>
+    </ng-template>
+    <ng-template [ngIf]="sessionGuideStatus!=='downloading'">
+      <ion-icon slot="end" name="download"></ion-icon>
+      <span>Downloading Session Guide</span>
+    </ng-template>
+  </ion-button>
+  <ion-button
+    class="footer-button"
+    expand="full"
+    *ngIf="sessionGuideStatus==='downloaded'"
+    (click)="goToSession()"
+  >
+    <!-- TODO - disable open session button/make download if not downloaded -->
+    <span>Go To Session</span>
+    <ion-icon slot="end" name="arrow-forward"></ion-icon>
+  </ion-button>
+
+  <!-- Active Session Template -->
+  <!-- <div *ngIf="(db.days$ | async)[dayId-1] as day">
+    <div *ngIf="day.sessions[sessionNumber-1] as sessionId">
+      <div *ngIf="(db.sessionsById$ | async)[sessionId] as session">
+        <h2>Session {{sessionNumber}} - {{session.title}}</h2>
+        <h4>Attachments</h4>
+        <app-session-attachment [session]="session"></app-session-attachment>
+      </div>
+    </div>
+    <div class="sessions-container"></div>
+  </div> -->
+</ion-content>

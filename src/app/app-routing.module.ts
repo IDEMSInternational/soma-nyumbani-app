@@ -4,19 +4,20 @@ import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "day/1",
+    redirectTo: "home",
     pathMatch: "full",
   },
   {
-    path: "day/:dayId",
+    path: "home",
     loadChildren: () =>
-      import("./pages/day/day.module").then((m) => m.DayPageModule),
+      import("./pages/home/home.module").then((m) => m.HomePageModule),
   },
   {
-    path: "day/:dayId/session/:sessionId",
+    path: "report",
     loadChildren: () =>
-      import("./pages/session/session.module").then((m) => m.SessionPageModule),
+      import("./pages/report/report.module").then((m) => m.ReportPageModule),
   },
+
   {
     path: "about",
     loadChildren: () =>
@@ -29,11 +30,7 @@ const routes: Routes = [
         (m) => m.DownloadsPageModule
       ),
   },
-  {
-    path: "search",
-    loadChildren: () =>
-      import("./pages/search/search.module").then((m) => m.SearchPageModule),
-  },
+
   {
     path: "terms",
     loadChildren: () =>
@@ -49,8 +46,9 @@ const routes: Routes = [
     loadChildren: () =>
       import("./pages/privacy/privacy.module").then((m) => m.PrivacyPageModule),
   },
-  // If page doesn't exist just redirect
-  { path: "**", redirectTo: "day/1" },
+
+  // If page doesn't exist just redirect - disabled during development
+  // { path: "**", redirectTo: "/" },
 ];
 
 @NgModule({

@@ -1,0 +1,44 @@
+section {
+  margin-bottom: 2em;
+}
+section > h2 {
+  border-bottom: 1px solid rgb(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  background: white;
+  margin: 8px -16px;
+}
+section > div,
+ion-button,
+p {
+  margin: 8px 16px;
+}
+.reflection-container {
+  border: 2px solid var(--ion-color-secondary);
+  border-radius: 8px;
+}
+.reflection-prompt {
+  background: var(--ion-color-secondary);
+  color: white;
+  padding: 8px;
+}
+.session-select-button {
+  border: 2px solid var(--ion-color-secondary);
+  border-style: dashed;
+  height: 4em;
+}
+
+.footer-button {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 4em;
+  margin: 0;
+  opacity: 1;
+  z-index: 2;
+}
+
+ion-textarea {
+  min-height: 4em;
+}

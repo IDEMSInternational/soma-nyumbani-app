@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { DbService } from "src/app/services/db.service";
 import { FileService } from "src/app/services/file.service";
-import { ICustomAttachment, IDBDoc, ISessionMeta } from "src/types";
+import { ICustomAttachment, IDBDoc, ISessionMeta } from "src/models";
 
 @Component({
   selector: "app-downloads",

@@ -1,6 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
 import { IonSlides, ModalController } from "@ionic/angular";
-import { IUser } from "src/types";
+import { IUser } from "src/models";
 import { PrivacyPage } from "../pages/privacy/privacy.page";
 import { TermsPage } from "../pages/terms/terms.page";
 
@@ -42,11 +42,6 @@ import { UserService } from "../services/user.service";
 
       b {
         font-weight: 500;
-      }
-      .link {
-        text-decoration: underline;
-        color: var(--ion-color-primary);
-        cursor: pointer;
       }
 
       p {

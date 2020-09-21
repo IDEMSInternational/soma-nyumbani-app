@@ -1,6 +1,6 @@
 {
   "appId": "international.idems.somanyumbani",
-  "appName": "soma-nyumbani",
+  "appName": "Soma Nyumbani",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "www",

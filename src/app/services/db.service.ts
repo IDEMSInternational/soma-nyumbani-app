@@ -3,23 +3,22 @@ import { Injectable } from "@angular/core";
 import * as PouchDBDist from "pouchdb/dist/pouchdb";
 import * as PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
-import { ISessionMeta, IDayMeta, IDBDoc } from "src/types";
+import { ISessionMeta, IDBDoc } from "src/models";
 import { AnalyticsService } from "./analytics.service";
+import { environment } from "src/environments/environment";
 const PouchDB: typeof PouchDBDefault = PouchDBDist;
 
+const DB_SUFFIX = environment.staging ? "_staging" : "";
+// NOTE - this should be replaced with ci variables once in production
 const DB_USER = "somanyumbani_app";
 const DB_PASS = "somanyumbani_app";
 const DB_DOMAIN = "db.somanyumbani.com";
 const localDBs = {
-  sessions: new PouchDB("somanyumbani_sessions"),
-  days: new PouchDB("somanyumbani_days"),
+  sessions: new PouchDB(`somanyumbani_sessions${DB_SUFFIX}`),
 };
 const remoteDBs = {
   sessions: new PouchDB(
-    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_sessions`
-  ),
-  days: new PouchDB(
-    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_days`
+    `https://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/somanyumbani_sessions${DB_SUFFIX}`
   ),
 };
 
@@ -37,8 +36,8 @@ export class DbService {
    * ```
    ***************************************************************************/
 
-  days$ = new BehaviorSubject<(IDayMeta & IDBDoc)[]>([]);
   sessions$ = new BehaviorSubject<(ISessionMeta & IDBDoc)[]>([]);
+  sessionsByDay$ = new BehaviorSubject<(ISessionMeta & IDBDoc)[][]>([[]]);
   sessionsById$ = new BehaviorSubject<{
     [sessionId: string]: ISessionMeta & IDBDoc;
   }>({});
@@ -116,16 +115,36 @@ export class DbService {
     });
     const docs = rows.map((r) => r.doc);
     switch (endpoint) {
-      case "days":
-        this.days$.next(docs);
-        return;
       case "sessions":
         const sessionsById = {};
         docs.forEach((d) => (sessionsById[d._id] = d));
-        this.sessions$.next(docs);
+        this.sessions$.next(this._sortSessions(docs));
         this.sessionsById$.next(sessionsById);
+        this.sessionsByDay$.next(this._sortSessionsByDay(docs));
+        console.log("sessions by day", this.sessionsByDay$.value);
         return;
     }
+  }
+
+  private _sortSessions(sessions: (ISessionMeta & IDBDoc)[]) {
+    return sessions.sort((a, b) =>
+      a.day_number === b.day_number
+        ? a.session_number - b.session_number
+        : a.day_number - b.day_number
+    );
+  }
+  private _sortSessionsByDay(sessions: (ISessionMeta & IDBDoc)[]) {
+    sessions = this._sortSessions(sessions);
+    const days = [[]];
+    sessions.forEach((s) => {
+      const dayIndex = s.day_number - 1;
+      if (!days[dayIndex]) {
+        days[dayIndex] = [];
+      }
+      days[dayIndex].push(s);
+    });
+    console.log("days", days);
+    return days;
   }
 
   /**
@@ -134,7 +153,6 @@ export class DbService {
    * docs during replication or not
    */
   private syncRemoteDBs() {
-    this._replicateRemoteDB("days");
     this._replicateRemoteDBWithoutAttachments("sessions");
   }
   /**

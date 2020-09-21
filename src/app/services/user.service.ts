@@ -3,7 +3,12 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { auth } from "firebase/app";
 import { BehaviorSubject } from "rxjs";
-import { IUser, DEFAULT_USER } from "src/types";
+import {
+  IUser,
+  DEFAULT_USER,
+  IUserMeta,
+  IUserSubcollections,
+} from "src/models";
 
 @Injectable({
   providedIn: "root",
@@ -34,13 +39,36 @@ export class UserService {
   }
 
   /**
-   *
+   * Update core user meta data
    * @param update - Fields to update on the user
    * @param sync - Whether to sync with online server immediately
    */
-  updateUser(update: Partial<IUser>, sync = true) {
-    this.user$.next({ ...this.user, ...update });
-    localStorage.setItem("user", JSON.stringify(this.user));
+  updateUser(update: Partial<IUserMeta>, sync = true) {
+    console.log("update user", update);
+    const user = { ...this.user, ...update };
+    this.saveUser(user, sync);
+  }
+  /**
+   * Update docs within user subcollection
+   */
+  updateUserDoc(
+    collection: keyof IUserSubcollections,
+    docId: string,
+    update: { [docId: string]: any },
+    sync = true
+  ) {
+    console.log("update user doc", collection, docId, update);
+    const user = { ...this.user };
+    user[collection as any][docId] = update;
+    this.saveUser(user, sync);
+  }
+
+  private saveUser(user: IUser, sync = true) {
+    console.log("saving user", user);
+    const _lastModified = new Date().toISOString();
+    user = { ...user, _lastModified };
+    localStorage.setItem("user", JSON.stringify(user));
+    this.user$.next(user);
     if (sync) {
       this.syncUser(this.user);
     }
@@ -55,7 +83,11 @@ export class UserService {
     this.afAuth.signOut();
   }
 
+  /**
+   * TODO - possibly better to trigger on daily check, rather than writes
+   */
   private syncUser(user: IUser) {
+    // TODO - sync subcollection docs (e.g. reports) to proper location
     const { uid } = user;
     if (uid) {
       this.firestore.collection("users").doc(uid).set(user);
@@ -71,10 +103,10 @@ export class UserService {
         // TODO - subscribe to user updates (currently just 1-time fetch)
         const doc = await ref.get().toPromise();
         if (doc.exists) {
-          // TODO - handle case where local changes exist and differ from server
+          // TODO - sync user from server - make sure not to overwrite existing data
           // e.g. sync'd some reports on one device, and then used another and
           // want to re-sync
-          this.updateUser(doc.data() as IUser, false);
+          // this.updateUser(doc.data() as IUser, false);
         } else {
           this.updateUser({ uid });
         }
