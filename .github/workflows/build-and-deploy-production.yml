@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_web]
     continue-on-error: true
-    name: Build and Deploy Android to Play Beta Track
+    name: Build and Deploy Android to Play Internal Track
     steps:
       - name: Download Build Artifact
         uses: actions/download-artifact@v2
@@ -86,7 +86,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: international.idems.somanyumbani
           releaseFile: ${{ env.SIGNED_RELEASE_FILE}}
-          track: beta
+          track: internal
           #whatsNewDirectory: /distribution/whatsnew
   cleanup:
     # NOTE - this will only run if previous action successful, so either ensure passes, or move to cron job
