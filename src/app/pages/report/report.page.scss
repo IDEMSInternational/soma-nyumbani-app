@@ -6,6 +6,7 @@ section > h2 {
   border-top: 1px solid rgba(0, 0, 0, 0.15);
   padding: 8px;
   background: white;
+  margin: 8px -16px;
 }
 section > div,
 ion-button,
@@ -37,6 +38,7 @@ p {
   opacity: 1;
   z-index: 2;
 }
-ion-button.footer-button.button-disabled {
-  background-color: var(--ion-color-light-shade);
+
+ion-textarea {
+  min-height: 4em;
 }
