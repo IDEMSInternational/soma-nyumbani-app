@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import * as PouchDBDist from "pouchdb/dist/pouchdb";
 import * as PouchDBDefault from "pouchdb";
 import { BehaviorSubject } from "rxjs";
-import { ISessionMeta, IDayMeta, IDBDoc } from "src/models";
+import { ISessionMeta, IDBDoc } from "src/models";
 import { AnalyticsService } from "./analytics.service";
 import { environment } from "src/environments/environment";
 const PouchDB: typeof PouchDBDefault = PouchDBDist;
@@ -36,7 +36,6 @@ export class DbService {
    * ```
    ***************************************************************************/
 
-  days$ = new BehaviorSubject<(IDayMeta & IDBDoc)[]>([]);
   sessions$ = new BehaviorSubject<(ISessionMeta & IDBDoc)[]>([]);
   sessionsByDay$ = new BehaviorSubject<(ISessionMeta & IDBDoc)[][]>([[]]);
   sessionsById$ = new BehaviorSubject<{

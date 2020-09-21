@@ -87,6 +87,7 @@ export class UserService {
    * TODO - possibly better to trigger on daily check, rather than writes
    */
   private syncUser(user: IUser) {
+    // TODO - sync subcollection docs (e.g. reports) to proper location
     const { uid } = user;
     if (uid) {
       this.firestore.collection("users").doc(uid).set(user);
@@ -102,10 +103,10 @@ export class UserService {
         // TODO - subscribe to user updates (currently just 1-time fetch)
         const doc = await ref.get().toPromise();
         if (doc.exists) {
-          // TODO - handle case where local changes exist and differ from server
+          // TODO - sync user from server - make sure not to overwrite existing data
           // e.g. sync'd some reports on one device, and then used another and
           // want to re-sync
-          this.updateUser(doc.data() as IUser, false);
+          // this.updateUser(doc.data() as IUser, false);
         } else {
           this.updateUser({ uid });
         }

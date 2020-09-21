@@ -17,7 +17,7 @@ import { ModalController } from "@ionic/angular";
     <ion-content>
       <ng2-pdfjs-viewer [pdfSrc]="pdfSrc"></ng2-pdfjs-viewer>
     </ion-content>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button color="secondary">
         <ion-icon name="clipboard-outline"></ion-icon>
       </ion-fab-button>
@@ -26,7 +26,7 @@ import { ModalController } from "@ionic/angular";
           ><ion-icon name="document-text-outline"></ion-icon
         ></ion-fab-button>
       </ion-fab-list>
-    </ion-fab>
+    </ion-fab> -->
   `,
 })
 /**

@@ -1,9 +1,5 @@
 import { IDBAttachmentStub } from "./db.model";
 
-export interface IDayMeta {
-  title: string;
-  sessions: string[];
-}
 export interface ISessionMeta {
   title: string;
   description: string;

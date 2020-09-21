@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 export interface ISessionReport extends IUserDocBase {
   _draft: boolean;
   _id: string;
+  day_number: number;
+  session_number: number;
   sessionDate: string;
   selectedSession: string | null;
   cohort: string;
@@ -34,8 +36,10 @@ export const DEFAULT_REFLECTION_QUESTIONS: ISessionReflection[] = [
 
 export const DEFAULT_REPORT: ISessionReport = {
   ...USER_DOC_BASE(),
-  _id: uuidv4(),
+  _id: null,
   _draft: true,
+  day_number: 1,
+  session_number: 1,
   sessionDate: formatDateForInput(),
   selectedSession: null,
   cohort: "default",
