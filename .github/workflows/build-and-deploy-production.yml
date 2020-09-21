@@ -33,6 +33,7 @@ jobs:
             !node_modules
             node_modules/@capacitor
             node_modules/@capacitor-community
+            node_modules/capacitor-firebase-auth
   deploy_firebase:
     runs-on: ubuntu-latest
     needs: [build_web]
