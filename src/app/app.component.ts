@@ -7,6 +7,7 @@ import { UserService } from "./services/user.service";
 import { environment } from "src/environments/environment";
 import { DbService } from "./services/db.service";
 import { ActivatedRoute } from "@angular/router";
+import { ErrorService } from "./services/error.service";
 const { SplashScreen } = Plugins;
 
 @Component({
@@ -23,7 +24,8 @@ export class AppComponent {
     private analyticsService: AnalyticsService,
     private dbService: DbService,
     public route: ActivatedRoute,
-    public userService: UserService
+    public userService: UserService,
+    private errorService: ErrorService
   ) {
     this.initializeApp();
     console.log("route", route.snapshot);
@@ -34,6 +36,7 @@ export class AppComponent {
       this.analyticsService.init();
       this.userService.init();
       this.dbService.init();
+      this.errorService.init();
     });
   }
 }

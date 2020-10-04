@@ -1,6 +1,7 @@
 package international.idems.somanyumbani;
 import com.baumblatt.capacitor.firebase.auth.CapacitorFirebaseAuth;
 import com.getcapacitor.community.firebaseanalytics.FirebaseAnalytics;
+import com.getcapacitor.community.firebasecrashlytics.FirebaseCrashlytics;
 
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ public class MainActivity extends BridgeActivity {
       // Ex: add(TotallyAwesomePlugin.class);
       add(FirebaseAnalytics.class);
       add(CapacitorFirebaseAuth.class);
+      add(FirebaseCrashlytics.class);
     }});
   }
 }
