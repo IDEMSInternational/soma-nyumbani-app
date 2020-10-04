@@ -29,11 +29,13 @@ export class AnalyticsService {
    */
   async init() {
     await this._waitForAnalyticsConsent();
+    if (this.userService.user && this.userService.user.uid) {
+      this.setUserID(this.userService.user.uid);
+    }
     if (!Capacitor.isNative) {
       Analytics.initializeFirebase(environment.FIREBASE_CONFIG);
     }
     this.analyticsEnabled = true;
-    console.info("analytics enabled");
     this._subscribeToRouteChanges();
   }
   /**
