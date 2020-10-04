@@ -6,8 +6,8 @@ android {
         applicationId "international.idems.somanyumbani"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 0001000002
-        versionName "1.0.2"
+        versionCode 0001000003
+        versionName "1.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
