@@ -71,6 +71,7 @@ import { UserService } from "../services/user.service";
             expand="block"
             fill="outline"
             (click)="setRole('teacher')"
+            aria-label="role-teacher"
           >
             Teacher
           </ion-button>
@@ -78,6 +79,7 @@ import { UserService } from "../services/user.service";
             expand="block"
             fill="outline"
             (click)="setRole('facilitator')"
+            aria-label="role-facilitator"
           >
             Facilitator
           </ion-button>
@@ -93,7 +95,7 @@ import { UserService } from "../services/user.service";
           <p>Sign in to automatically backup and restore your data</p>
           <ion-button
             color="secondary"
-            aria-label="privacy-consent-true"
+            aria-label="google-sign-in"
             expand="block"
             fill="solid"
             (click)="signIn()"
@@ -102,7 +104,7 @@ import { UserService } from "../services/user.service";
           </ion-button>
           <ion-button
             color="dark"
-            aria-label="privacy-consent-true"
+            aria-label="google-sign-in-skip"
             expand="block"
             fill="clear"
             (click)="slides.slideNext()"

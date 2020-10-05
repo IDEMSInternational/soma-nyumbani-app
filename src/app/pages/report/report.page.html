@@ -132,6 +132,7 @@
     *ngIf="sessionGuideStatus !== 'downloaded'"
     (click)="downloadSessionGuide()"
     [disabled]="sessionGuideStatus==='downloading'"
+    aria-label="download-session-guide"
   >
     <ng-template [ngIf]="sessionGuideStatus==='downloading'">
       <span>Downloading Session Guide</span>
@@ -139,7 +140,7 @@
     </ng-template>
     <ng-template [ngIf]="sessionGuideStatus!=='downloading'">
       <ion-icon slot="end" name="download"></ion-icon>
-      <span>Downloading Session Guide</span>
+      <span>Download Session Guide</span>
     </ng-template>
   </ion-button>
   <ion-button
@@ -147,6 +148,7 @@
     expand="full"
     *ngIf="sessionGuideStatus==='downloaded'"
     (click)="goToSession()"
+    aria-label="go-to-session"
   >
     <!-- TODO - disable open session button/make download if not downloaded -->
     <span>Go To Session</span>
