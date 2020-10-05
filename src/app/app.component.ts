@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 
 import { Platform } from "@ionic/angular";
-import { Plugins } from "@capacitor/core";
+import { Plugins, Capacitor } from "@capacitor/core";
 import { AnalyticsService } from "./services/analytics.service";
 import { UserService } from "./services/user.service";
 import { environment } from "src/environments/environment";
@@ -37,6 +37,9 @@ export class AppComponent {
       this.userService.init();
       this.dbService.init();
       this.errorService.init();
+      if (Capacitor.isNative) {
+        SplashScreen.hide();
+      }
     });
   }
 }

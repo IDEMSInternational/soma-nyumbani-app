@@ -36,7 +36,7 @@ class SomaNyumbaniTest {
   fun initialize() {
     Log.d(TAG, "setup");
     // ensure splash screen gone and webview visible
-    Thread.sleep(3000)
+    Thread.sleep(5000L)
     onWebView().forceJavascriptEnabled()
   }
 
@@ -48,47 +48,63 @@ class SomaNyumbaniTest {
     Thread.sleep(5000)
     Log.d(TAG,"Starting")
     try {
-      ScreenShotter.takeScreenshot("tutorial_screen_1", EspressoHelper.getCurrentActivity());
       val roleEl = getEl("ion-button[aria-label=\"role-teacher\"]")
+      ScreenShotter.takeScreenshot("tutorial_screen_1", EspressoHelper.getCurrentActivity());
       roleEl.perform(webClick())
-      Thread.sleep(1000)
-      val signInSkipEl = getEl("ion-button[aria-label=\"google-sign-in-skip\"]")
+      val signInSkipEl = waitForEl("ion-button[aria-label=\"google-sign-in-skip\"]")
       signInSkipEl.perform(webClick())
-      Thread.sleep(1000)
-      val analyticsConsentEl = getEl("ion-button[aria-label=\"privacy-consent-true\"]")
+      val analyticsConsentEl = waitForEl("ion-button[aria-label=\"privacy-consent-true\"]")
       analyticsConsentEl.perform(webClick())
-      // Give time for problems to load
-      Thread.sleep(3000)
     } catch (notExist: RuntimeException) {
       // if running on pre-configured device intro screen might be disabled
     }
-    Thread.sleep(1000)
+    val cardEl = waitForEl("ion-card")
     ScreenShotter.takeScreenshot("todays_sessions_screen", EspressoHelper.getCurrentActivity());
-    val cardEl = getEl("ion-card")
     cardEl.perform(webClick())
-    Thread.sleep(1000)
     ScreenShotter.takeScreenshot("session_details_screen", EspressoHelper.getCurrentActivity());
     try {
       val downloadEl = getEl("ion-button[aria-label=\"download-session-guide\"]")
       downloadEl.perform(webClick())
-      // give time to download
-      Thread.sleep(15000)
     } catch (notExist: RuntimeException) {
       // possible already downloaded
     }
-    val goToSessionEl = getEl("ion-button[aria-label=\"go-to-session\"]")
+    val goToSessionEl = waitForEl("ion-button[aria-label=\"go-to-session\"]")
     goToSessionEl.perform(webClick())
-    Thread.sleep(3000)
-    takeScreenshot("session_open_screen");
+    // give time for pdf to load
     Thread.sleep(5000)
+    takeScreenshot("session_open_screen");
   }
-
-  private fun getEl(cssSelector: String): Web.WebInteraction<Void> {
-    Log.d(TAG, "getEl: "+cssSelector)
+  // get el in dom, throws error if not exists
+  private fun getEl(cssSelector: String): Web.WebInteraction<Void>{
     return onWebView().withElement(findElement(Locator.CSS_SELECTOR, cssSelector))
   }
+  // get el in dom, waits up to 15s before throwing
+  private fun waitForEl(cssSelector:String): Web.WebInteraction<Void> {
+    Log.d(TAG, "getEl: $cssSelector")
+    val timeout = 15000L
+    val interval = 100L
+    val startTime = System.currentTimeMillis()
+    while (!isVisible(cssSelector)) {
+      Thread.sleep(interval)
+      if (System.currentTimeMillis() - startTime >= timeout) {
+        throw AssertionError("$cssSelector not visible after $timeout milliseconds")
+      }
+    }
+    return onWebView().withElement(findElement(Locator.CSS_SELECTOR, cssSelector))
+  }
+  private fun isVisible(cssSelector: String): Boolean {
+    return try {
+      getEl(cssSelector)
+      true
+    } catch (notExist: RuntimeException){
+      return false
+    }
+  }
+
 
   private fun takeScreenshot(name: String) {
+    // typically want to wait for any animations to finish before taking screenshots
+    Thread.sleep(1000)
     ScreenShotter.takeScreenshot(name, EspressoHelper.getCurrentActivity());
     Screengrab.screenshot(name)
   }
