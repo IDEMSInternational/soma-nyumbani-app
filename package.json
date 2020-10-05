@@ -1,6 +1,6 @@
 {
   "name": "soma-nyumbani-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "IDEMS International",
   "homepage": "https://idems.international",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "test:build:android":"cd android && gradlew :app:assembleDebug :app:assembleDebugAndroidTest",
+    "test:build:android": "cd android && gradlew :app:assembleDebug :app:assembleDebugAndroidTest",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "app:build:staging": "ng build --configuration=\"production,staging\"",
