@@ -2,6 +2,13 @@ package international.idems.somanyumbani
 
 import android.app.Activity
 import android.util.Log
+import android.widget.ImageView
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
+import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.web.internal.deps.guava.collect.Iterables
 import androidx.test.espresso.web.sugar.Web
 import androidx.test.espresso.web.sugar.Web.onWebView
@@ -15,6 +22,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import com.google.android.libraries.cloudtesting.screenshots.ScreenShotter
+import org.hamcrest.Matchers
+import org.hamcrest.core.IsInstanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +45,7 @@ class SomaNyumbaniTest {
   fun initialize() {
     Log.d(TAG, "setup");
     // ensure splash screen gone and webview visible
-    Thread.sleep(5000L)
+    waitForSplashDismiss()
     onWebView().forceJavascriptEnabled()
   }
 
@@ -45,7 +54,6 @@ class SomaNyumbaniTest {
     // Added a sleep statement to match the app's execution delay.
     // The recommended way to handle such scenarios is to use Espresso idling resources:
     // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-    Thread.sleep(5000)
     Log.d(TAG,"Starting")
     try {
       val roleEl = getEl("ion-button[aria-label=\"role-teacher\"]")
@@ -80,6 +88,8 @@ class SomaNyumbaniTest {
   }
   // get el in dom, waits up to 15s before throwing
   private fun waitForEl(cssSelector:String): Web.WebInteraction<Void> {
+  // allow animations to finish before returning el
+    Thread.sleep(1000)
     Log.d(TAG, "getEl: $cssSelector")
     val timeout = 15000L
     val interval = 100L
@@ -97,6 +107,27 @@ class SomaNyumbaniTest {
       getEl(cssSelector)
       true
     } catch (notExist: RuntimeException){
+      return false
+    }
+  }
+  private fun waitForSplashDismiss(){
+    val timeout = 15000L
+    val interval = 100L
+    val startTime = System.currentTimeMillis()
+    while (onView(Matchers.allOf(IsInstanceOf.instanceOf(ImageView::class.java))).isDisplayed()) {
+      Thread.sleep(interval)
+      if (System.currentTimeMillis() - startTime >= timeout) {
+        throw AssertionError("splash still visible after $timeout milliseconds")
+      }
+    }
+  }
+  // TODO - optimise as inline function http://www.douevencode.com/articles/2019-02/espresso-wait-for-activity-visible/
+  // adds additional functionality to android view interaction (not webview) to return boolean if is displayed
+  private fun ViewInteraction.isDisplayed(): Boolean {
+    try {
+      check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+      return true
+    } catch (e: NoMatchingViewException) {
       return false
     }
   }
